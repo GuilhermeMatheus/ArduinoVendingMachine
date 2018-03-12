@@ -7,13 +7,13 @@ Cart::Cart(int capacity) {
     this->p_products = new Product*[capacity];
 }
 
-float Cart::getCartPrice() {
+float Cart::GetCartPrice() {
     return this->cartPrice;
 }
 
-void Cart::addProduct(Product* p_product) {
+void Cart::AddProduct(Product* p_product) {
     if(productsCount <= capacity) {
         this->p_products[productsCount++] = p_product;
-        this->cartPrice += p_product->getPrice();
+        this->cartPrice += p_product->GetPrice();
     }
 }

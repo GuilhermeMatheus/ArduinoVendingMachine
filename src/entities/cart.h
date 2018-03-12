@@ -12,8 +12,8 @@ class Cart
 
 public:
   Cart(int capacity);
-  float getCartPrice();
-  void addProduct(Product* product)
+  float GetCartPrice();
+  void AddProduct(Product* p_product);
 };
 
 #endif /* CART_H */

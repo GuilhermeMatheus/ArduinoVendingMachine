@@ -4,12 +4,13 @@
 class Product
 {
   float price;
+  int helix;
   char* p_name;
 
 public:
-  Product(float price, char* name);
-  float getPrice();
-  char* getName();
+  Product(float price, char* name, int helix);
+  float GetPrice();
+  char* GetName();
 };
 
 
