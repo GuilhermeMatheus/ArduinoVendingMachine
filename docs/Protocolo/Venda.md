@@ -6,8 +6,8 @@ Este documento descreve a comunicação entre o servidor e a vending machine dur
 Definições
 ==========
 
-*Código de cliente:* O ID do usuário é uma cadeia de 8 bytes à partir do identificador do cartão compatível com RFID;
-*Código de Transação:* Toda transação, seja concluída com sucesso ou não, possui um código de número inteiro de 32 bits;
+- **Código de cliente:** O ID do usuário é uma cadeia de 8 bytes à partir do identificador do cartão compatível com RFID;
+- **Código de Transação:** Toda transação, seja concluída com sucesso ou não, possui um código de número inteiro de 32 bits;
 
 
 Venda
@@ -39,8 +39,9 @@ A requisição Request3 possui a seguinte estrutura, onde a unidade das colunas 
 
 
 *Exemplos:*
+
     0xff 0xff 0xff 0xff
-    1-1111-2-
+    
 
 Request4(**)
 ============
