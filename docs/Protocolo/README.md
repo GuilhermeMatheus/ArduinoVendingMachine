@@ -10,8 +10,8 @@ Ações
 
 As ações permitidas por este protocolo são restritas. **Toda comunicação possui uma intenção única, definida no primeiro byte dos dados transferidos pelo iniciador**. 
 
-| Valor do primeiro Byte | Iniciador | Tipo de pedido
-|:-  |:-  |:-  |:- 
+| Valor do primeiro Byte | Iniciador | Tipo de pedido |
+|:---------------------  |:--------  |:-------------- |
 |0x00  | VendingMachine  | [Venda](Venda.md)
 |0x01  | VendingMachine  | [Estorno](Estorno.md)
 |0x02  | Servidor  | [Atualização de preços](AtualizacaoDePrecos.md)
