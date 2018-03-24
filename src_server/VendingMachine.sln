@@ -9,8 +9,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VendingMachine.Core", "Vend
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VendingMachine.EF", "VendingMachine.EF\VendingMachine.EF.csproj", "{A8A7FD70-3380-4F12-9A03-17BB5B71FF9B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VendingMachine.DAL", "VendingMachine.DAL\VendingMachine.DAL.csproj", "{97C9E4E0-47BE-4151-AECE-33A203D6CAB9}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VendingMachine.Web", "VendingMachine.Web\VendingMachine.Web.csproj", "{27CE8438-085D-412D-A355-90D6377D33DE}"
 EndProject
 Global
@@ -31,10 +29,6 @@ Global
 		{A8A7FD70-3380-4F12-9A03-17BB5B71FF9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A8A7FD70-3380-4F12-9A03-17BB5B71FF9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A8A7FD70-3380-4F12-9A03-17BB5B71FF9B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{97C9E4E0-47BE-4151-AECE-33A203D6CAB9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{97C9E4E0-47BE-4151-AECE-33A203D6CAB9}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{97C9E4E0-47BE-4151-AECE-33A203D6CAB9}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{97C9E4E0-47BE-4151-AECE-33A203D6CAB9}.Release|Any CPU.Build.0 = Release|Any CPU
 		{27CE8438-085D-412D-A355-90D6377D33DE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{27CE8438-085D-412D-A355-90D6377D33DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{27CE8438-085D-412D-A355-90D6377D33DE}.Release|Any CPU.ActiveCfg = Release|Any CPU

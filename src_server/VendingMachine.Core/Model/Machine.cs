@@ -12,8 +12,13 @@ namespace VendingMachine.Core.Model
         [Key]
         public virtual int Id { get; set; }
 
+        [Display(Name ="Apelido")]
         public virtual string Alias { get; set; }
+
+        [Display(Name ="Ativada")]
         public virtual bool IsActivated { get; set; }
+
+        [Display(Name ="Endereço")]
         public virtual string Address { get; set; }
     }
 }

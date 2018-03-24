@@ -12,7 +12,11 @@ namespace VendingMachine.Core.Model
         [Key]
         public virtual int Rfid { get; set; }
 
+        [Display(Name ="Apelido")]
         public virtual string Alias { get; set; }
+
+        [Display(Name = "Crédito")]
+        [DataType(DataType.Currency)]
         public virtual decimal Credit { get; set; }
     }
 }

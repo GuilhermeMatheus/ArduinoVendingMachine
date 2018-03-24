@@ -69,10 +69,6 @@
       <Project>{70b5a701-1d96-481a-8c1a-2cd56f891ccb}</Project>
       <Name>VendingMachine.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\VendingMachine.DAL\VendingMachine.DAL.csproj">
-      <Project>{97c9e4e0-47be-4151-aece-33a203d6cab9}</Project>
-      <Name>VendingMachine.DAL</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

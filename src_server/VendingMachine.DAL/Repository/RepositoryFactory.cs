@@ -8,7 +8,7 @@ using Repository;
 using VendingMachine.EF;
 using Repository.EntityFramework;
 
-namespace VendingMachine.DAL.Repository
+namespace VendingMachine.DAL
 {
     public class RepositoryFactory
     {
