@@ -1,38 +1,41 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
+using VendingMachine.Server.Actions;
 
 namespace VendingMachine.Server
 {
     class Program
     {
+        // private static readonly int TCP_PORT = Int32.Parse(ConfigurationManager.AppSettings["tcp:port"]);
 
         static void Main(string[] args)
         {
-            var serverSocket = new TcpListener(IPAddress.IPv6Loopback, 8888);
+            //var serverSocket = new TcpListener(IPAddress.Any, TCP_PORT);
+            var serverSocket = new TcpListener(IPAddress.Any, 4444);
             
-            TcpClient clientSocket = default(TcpClient);
             serverSocket.Start();
-            Console.WriteLine(" >> Server Started");
-            clientSocket = serverSocket.AcceptTcpClient();
-            Console.WriteLine(" >> Accept connection from client");
-
-            while ((true))
+            
+            while (true)
             {
                 try
                 {
-                    NetworkStream networkStream = clientSocket.GetStream();
-                    byte[] bytesFrom = new byte[10025];
-                    networkStream.Read(bytesFrom, 0, clientSocket.ReceiveBufferSize);
-                    string dataFromClient = Encoding.ASCII.GetString(bytesFrom);
-                    dataFromClient = dataFromClient.Substring(0, dataFromClient.IndexOf("$"));
+                    var clientSocket = serverSocket.AcceptTcpClient();
+                    var networkStream = clientSocket.GetStream();
+                    var bytesFrom = new byte[20];
+
+                    networkStream.Read(bytesFrom, 0, bytesFrom.Length);
+                    var actionType = (ActionType)bytesFrom[0];
+
+                    var dataFromClient = Encoding.ASCII.GetString(bytesFrom);
                     Console.WriteLine(" >> Data from client - " + dataFromClient);
                     string serverResponse = "Last Message from client" + dataFromClient;
-                    Byte[] sendBytes = Encoding.ASCII.GetBytes(serverResponse);
+                    var sendBytes = Encoding.ASCII.GetBytes(serverResponse);
                     networkStream.Write(sendBytes, 0, sendBytes.Length);
                     networkStream.Flush();
                     Console.WriteLine(" >> " + serverResponse);
@@ -43,7 +46,6 @@ namespace VendingMachine.Server
                 }
             }
 
-            clientSocket.Close();
             serverSocket.Stop();
             Console.WriteLine(" >> exit");
             Console.ReadLine();

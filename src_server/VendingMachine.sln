@@ -11,6 +11,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VendingMachine.EF", "Vendin
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VendingMachine.Web", "VendingMachine.Web\VendingMachine.Web.csproj", "{27CE8438-085D-412D-A355-90D6377D33DE}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{047362A8-0519-4922-8EEE-3B677BE74398}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VendingMachine.Server.Tests", "VendingMachine.Server.Tests\VendingMachine.Server.Tests.csproj", "{4F10F0E6-ABE4-4157-B1E6-501B27CF1080}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,9 +37,16 @@ Global
 		{27CE8438-085D-412D-A355-90D6377D33DE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{27CE8438-085D-412D-A355-90D6377D33DE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{27CE8438-085D-412D-A355-90D6377D33DE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4F10F0E6-ABE4-4157-B1E6-501B27CF1080}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4F10F0E6-ABE4-4157-B1E6-501B27CF1080}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4F10F0E6-ABE4-4157-B1E6-501B27CF1080}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4F10F0E6-ABE4-4157-B1E6-501B27CF1080}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{4F10F0E6-ABE4-4157-B1E6-501B27CF1080} = {047362A8-0519-4922-8EEE-3B677BE74398}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {074E4813-0F23-4C39-B73F-09565FBE624D}
