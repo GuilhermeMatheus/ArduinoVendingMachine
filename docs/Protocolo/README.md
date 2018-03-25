@@ -5,6 +5,11 @@ Este documento descreve o protocolo de aplicação entre o servidor e a vending 
 
 O protocolo HTTP oferece muitos recursos dispensáveis para este projeto. Além disso, o overhead para se iniciar uma requisição HTTP é grande. O custo do HTTP não é justificado pelos recursos necessários pela ArduinoVendingMachine e, por esta razão, usamos o protocolo de aplicação definido aqui.
 
+Endianness
+=====
+
+Todos os valores numéricos são representados na ordem **big-endian**.
+
 Ações
 =====
 
