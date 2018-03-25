@@ -10,7 +10,7 @@ namespace VendingMachine.Core.Model
     public class ClientCard
     {
         [Key]
-        public virtual int Rfid { get; set; }
+        public virtual long Rfid { get; set; }
 
         [Display(Name ="Apelido")]
         public virtual string Alias { get; set; }
