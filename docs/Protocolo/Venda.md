@@ -28,10 +28,10 @@ A requisição de venda da vending machine possui a seguinte estrutura, onde a u
 |:-----------|:--------|:---------------|------|--------------------------------------------------------------|
 | 0 | 1 | Início de requisição | Byte | A intenção de pedido de venda. Veja mais [aqui](README.md#venda). |
 | 1 | 2 | VendingMachineID | Int16 | O código de identificação da VendingMachine que iniciou a venda. |
-| 2 | 7 | ClientCardID | byte[7] | O código de identificação do cartão usado para pagamento da compra. |
-| 10 | 1 | ItemsCount | byte | A quantidade de itens vendidos. |
-| 11 | (n * 1) | Items | byte[n] | O código de cada produto da venda. |
-| 11 + (n * 1) | 4 | Price | Float | O valor da compra calculado pela vending machine e apresentada ao usuário. |
+| 3 | 4 | ClientCardID | byte[4] | O código de identificação do cartão usado para pagamento da compra. |
+| 7 | 1 | ItemsCount | byte | A quantidade de itens vendidos. |
+| 8 | (n * 1) | Items | byte[n] | O código de cada produto da venda. |
+| 8 + (n * 1) | 4 | Price | Float | O valor da compra calculado pela vending machine e apresentada ao usuário. |
 
 
 Exemplo
@@ -39,14 +39,14 @@ Exemplo
 
 A requisição com a cadeia de bytes abaixo:
 
-    0x00 0x00 0x24 0xFF 0xFF 0xFF 0xFF 0xFF 0xFF 0xFF 0x02 0x12 0x13 0x00 0x00 0x20 0x40
+    0x00 0x00 0x24 0xFF 0xFF 0xFF 0xFF 0x02 0x12 0x13 0x00 0x00 0x20 0x40
     
 Traz os valores:
 - **Intenção:** Venda;
-- **VendingMachineID:** 24;
-- **ClientCardID:** FF FF FF FF FF FF FF;
+- **VendingMachineID:** 36;
+- **ClientCardID:** FF FF FF FF;
 - **ItemsCount:** 2;
-- **Items:** 12 e 13;
+- **Items:** 18 e 19;
 - **Price:** 2,50.
 
 ***Resposta do servidor***
