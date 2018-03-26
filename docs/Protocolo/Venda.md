@@ -75,7 +75,7 @@ O campo *TransactionResult* possui as máscaras:
 Exemplo
 =
 
-A requisição com a cadeia de bytes abaixo:
+A resposta com a cadeia de bytes abaixo:
 
     0x00 0x02 0x80 0x00 0x00 0xF0 0x42
     
