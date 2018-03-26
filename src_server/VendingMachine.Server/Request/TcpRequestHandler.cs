@@ -10,8 +10,8 @@ namespace VendingMachine.Server.Request
     public class TcpRequestHandler : IRequestHandler
     {
         private NetworkStream _networkStream;
-        private readonly byte[] _bytesFrom;
         private TcpClient _clientSocket;
+        private byte[] _bytesFrom;
                 
         public TcpRequestHandler(TcpClient clientSocket)
         {
@@ -32,9 +32,9 @@ namespace VendingMachine.Server.Request
         private void SetNetworkStream(NetworkStream networkStream)
         {
             _networkStream = networkStream;
-
-            var bytesFrom = new byte[20];
-            networkStream.Read(bytesFrom, 0, bytesFrom.Length);
+            
+            _bytesFrom = new byte[20];
+            networkStream.Read(_bytesFrom, 0, _bytesFrom.Length);
         }
     }
 }

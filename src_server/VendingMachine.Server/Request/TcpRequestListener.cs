@@ -25,19 +25,15 @@ namespace VendingMachine.Server.Request
                 : 4444;
         }
 
-        protected override void OnPreStart()
+        public override void Start()
         {
-            base.OnPreStart();
-
             _serverSocket = new TcpListener(IPAddress.Any, _tcpPort);
             _serverSocket.Start();
         }
 
         protected override async Task<IRequestHandler> GetRequestHandler()
         {
-            var clientSocket = await _serverSocket.AcceptTcpClientAsync();
-            var networkStream = clientSocket.GetStream();
-            
+            var clientSocket = await _serverSocket.AcceptTcpClientAsync();            
             return new TcpRequestHandler(clientSocket);
         }
 

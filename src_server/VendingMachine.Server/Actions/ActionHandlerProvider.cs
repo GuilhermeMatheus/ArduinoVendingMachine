@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VendingMachine.Server.ActionHandler;
+using VendingMachine.Server.Exceptions;
 
 namespace VendingMachine.Server.Actions
 {
@@ -21,7 +22,7 @@ namespace VendingMachine.Server.Actions
 
                 case ActionType.PriceUpdate:
                 default:
-                    throw new NotImplementedException();
+                    throw new ActionNotSupportedException((byte)actionContext.Type);
             }
         }
     }

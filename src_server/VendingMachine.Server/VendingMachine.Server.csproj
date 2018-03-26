@@ -77,6 +77,7 @@
     <Compile Include="Actions\ActionType.cs" />
     <Compile Include="Actions\IActionHandler.cs" />
     <Compile Include="Actions\IActionHandlerProvider.cs" />
+    <Compile Include="Exceptions\ActionNotSupportedException.cs" />
     <Compile Include="Helpers\ByteHelper.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

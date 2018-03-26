@@ -18,9 +18,25 @@ namespace VendingMachine.Server.Request
             _actionHandlerProvider = actionHandlerProvider ?? throw new ArgumentNullException(nameof(actionHandlerProvider));
         }
 
-        public virtual async Task Start()
+        public abstract void Start();
+
+        public virtual void Listen()
         {
-            OnPreStart();
+            try
+            {
+                ListenAsync().Wait();
+            }
+            catch (AggregateException e)
+            {
+                if (e.InnerExceptions.Count == 1)
+                    throw e.InnerExceptions[0];
+
+                throw;
+            }
+        }
+
+        public virtual async Task ListenAsync()
+        {
             var requestHandler = await GetRequestHandler();
 
             var requestBytes = requestHandler.GetRequestBytes();
@@ -31,8 +47,6 @@ namespace VendingMachine.Server.Request
 
             await requestHandler.SendResponse(response);
         }
-
-        protected virtual void OnPreStart() { }
 
         protected abstract Task<IRequestHandler> GetRequestHandler();
 

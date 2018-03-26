@@ -7,48 +7,32 @@ using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 using VendingMachine.Server.Actions;
+using VendingMachine.Server.Exceptions;
+using VendingMachine.Server.Request;
 
 namespace VendingMachine.Server
 {
     class Program
     {
-        // private static readonly int TCP_PORT = Int32.Parse(ConfigurationManager.AppSettings["tcp:port"]);
-
         static void Main(string[] args)
         {
-            //var serverSocket = new TcpListener(IPAddress.Any, TCP_PORT);
-            var serverSocket = new TcpListener(IPAddress.Any, 4444);
-            
-            serverSocket.Start();
-            
+            var contextProvider = new ActionContextProvider();
+            var handlerProvider = new ActionHandlerProvider();
+            var requestListener = new TcpRequestListener(contextProvider, handlerProvider);
+
+            requestListener.Start();
+
             while (true)
             {
                 try
                 {
-                    var clientSocket = serverSocket.AcceptTcpClient();
-                    var networkStream = clientSocket.GetStream();
-                    var bytesFrom = new byte[20];
-
-                    networkStream.Read(bytesFrom, 0, bytesFrom.Length);
-                    var actionType = (ActionType)bytesFrom[0];
-
-                    var dataFromClient = Encoding.ASCII.GetString(bytesFrom);
-                    Console.WriteLine(" >> Data from client - " + dataFromClient);
-                    string serverResponse = "Last Message from client" + dataFromClient;
-                    var sendBytes = Encoding.ASCII.GetBytes(serverResponse);
-                    networkStream.Write(sendBytes, 0, sendBytes.Length);
-                    networkStream.Flush();
-                    Console.WriteLine(" >> " + serverResponse);
+                    requestListener.Listen();
                 }
-                catch (Exception ex)
+                catch (ActionNotSupportedException ex)
                 {
-                    Console.WriteLine(ex.ToString());
+                    Console.WriteLine(ex.Message);
                 }
             }
-
-            serverSocket.Stop();
-            Console.WriteLine(" >> exit");
-            Console.ReadLine();
         }
     }
 }
