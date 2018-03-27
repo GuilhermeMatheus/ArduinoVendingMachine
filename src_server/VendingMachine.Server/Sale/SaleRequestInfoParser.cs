@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using VendingMachine.Core.Operations;
 using static VendingMachine.Server.Helpers.ByteHelper;
 
 namespace VendingMachine.Server.Sale
@@ -33,6 +33,14 @@ namespace VendingMachine.Server.Sale
                 itemsCount: itemsCount,
                 itemsId: itemsId,
                 price: price);
+        }
+
+        public static byte[] ParseResponse(OperationResult<SaleOperationResult> result)
+        {
+            if (result == null)
+                throw new ArgumentNullException(nameof(result));
+
+            throw new NotImplementedException();
         }
     }
 }
