@@ -23,6 +23,6 @@ namespace VendingMachine.EF
         public virtual DbSet<ClientCard> ClientCards { get; set; }
         public virtual DbSet<Product> Products { get; set; }
         public virtual DbSet<Transaction> Transactions { get; set; }
-        public virtual DbSet<Machine> Machines { get; set; }
+        public virtual DbSet<Product> Machines { get; set; }
     }
 }

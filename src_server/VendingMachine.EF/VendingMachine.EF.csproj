@@ -46,7 +46,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Extensions\LinqExpressions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repository\ClientCardRepository.cs" />
+    <Compile Include="Repository\EFRepositoryBase.cs" />
+    <Compile Include="Repository\MachineRepository.cs" />
+    <Compile Include="Repository\ProductRepository.cs" />
+    <Compile Include="Repository\TransactionRepository.cs" />
     <Compile Include="VendingMachineDbContext.cs" />
   </ItemGroup>
   <ItemGroup>

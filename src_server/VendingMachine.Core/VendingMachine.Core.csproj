@@ -46,6 +46,9 @@
     <Compile Include="Model\Machine.cs" />
     <Compile Include="Model\Product.cs" />
     <Compile Include="Model\Transaction.cs" />
+    <Compile Include="Operations\IOperationResult.cs" />
+    <Compile Include="Operations\SaleOperation.cs" />
+    <Compile Include="Operations\SaleOperationResult.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\IRepository.cs" />
     <Compile Include="Services\ISaleService.cs" />
