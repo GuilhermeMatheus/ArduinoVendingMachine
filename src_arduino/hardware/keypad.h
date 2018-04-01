@@ -1,7 +1,7 @@
 #ifndef KEYPAD_H
 #define KEYPAD_H
 
- #include <stdint.h>
+#include <stdint.h>
 
 class KeyPad {
 public:

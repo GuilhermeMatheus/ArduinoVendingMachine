@@ -7,13 +7,13 @@ namespace {
   uint8_t col3;
   uint8_t col4;
 
-  char charMatrix[][4] = {
+  const char charMatrix[][4] PROGMEM = {
     { '1', '4', '7', '*' },
     { '2', '5', '8', '0' },
     { '3', '6', '9', '#' }
   };
 
-  inline bool inRange(int value, uint16_t pivot) {
+  bool inRange(int value, uint16_t pivot) {
     return (value > pivot - 150) && (value < pivot + 150);
   }
 

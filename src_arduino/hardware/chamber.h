@@ -1,7 +1,7 @@
 #ifndef CHAMBER_H
 #define CHAMBER_H
 
- #include <stdint.h>
+#include <stdint.h>
 
 class Chamber {
 public:

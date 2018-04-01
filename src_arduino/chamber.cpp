@@ -12,7 +12,7 @@ namespace {
     Wire.endTransmission();
   }
 
-  inline void clearSection(uint8_t addrSec) {
+  void clearSection(uint8_t addrSec) {
     writeInSection(addrSec, 0);
   }
 }
@@ -37,7 +37,7 @@ uint8_t Chamber::activateHelix(uint8_t line, uint8_t col) {
     addr = addrSec2;
     line -= 2;
   }
-
+ 
   idx = line * 4 + col;
   val = 1 << idx;
   
