@@ -1,3 +1,4 @@
+#include <LiquidCrystal.h>
 #include "globals.h"
 #include "states/state.h"
 #include "states/idleState.h"
@@ -12,8 +13,8 @@ static IdleState idleState(&testState);
 static void beforeNextState();
 
 void setup() {
-  gLcd.begin(20, 4);
-  gChamber.begin();
+  gGlobals.lcd.begin(20, 4);
+  gGlobals.gChamber.begin();
 
   State::_p_GlobalState = &gStateCurr;
 }
@@ -28,5 +29,5 @@ void loop() {
 }
 
 static void beforeNextState() {
-  gLcd.clear();
+  gGlobals.lcd.clear();
 }

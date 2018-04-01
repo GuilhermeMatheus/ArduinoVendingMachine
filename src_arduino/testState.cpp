@@ -7,8 +7,8 @@ TestState::TestState(State *pNextState) : State(pNextState) {
 }
 
 void TestState::enter() {
-  gLcd.setCursor(0, 3);
-  gLcd.print(F("TEST STATE"));
+  gGlobals.lcd.setCursor(0, 3);
+  gGlobals.lcd.print(F("TEST STATE"));
   delay(2000);
   
   updateGlobalStateToNext();
