@@ -6,8 +6,11 @@
 class KeyPad {
 public:
   KeyPad(uint8_t c1, uint8_t c2, uint8_t c3);
-  char waitForChar();
-  int8_t waitForInt();
+  void waitInput();
+  bool curCharIsOk();
+  bool curCharIsCancel();
+  bool curCharIsDigit();
+  int8_t curCharAsDigit();
 };
 
 #endif /* KEYPAD_H */

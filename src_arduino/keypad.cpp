@@ -7,6 +7,8 @@ namespace {
   uint8_t col3;
   uint8_t col4;
 
+  char currentChar;
+
   const char charMatrix[][4] PROGMEM = {
     { '1', '4', '7', '*' },
     { '2', '5', '8', '0' },
@@ -41,15 +43,15 @@ namespace {
 
     state = getColumnState(col1);
     if(getColumnState(col1) >= 0)
-      return charMatrix[0][state];
+      return pgm_read_byte(&(charMatrix[0][state]));;
     
     state = getColumnState(col2);
     if(getColumnState(col2) >= 0)
-      return charMatrix[1][state];
+      return pgm_read_byte(&(charMatrix[1][state]));;
     
     state = getColumnState(col3);
     if(getColumnState(col3) >= 0)
-      return charMatrix[2][state];
+      return pgm_read_byte(&(charMatrix[2][state]));;
     
     return ' ';
   }
@@ -59,19 +61,29 @@ KeyPad::KeyPad(uint8_t c1, uint8_t c2, uint8_t c3) {
   col1 = c1;
   col2 = c2;
   col3 = c3;
+  currentChar = ' ';
 }
 
-char KeyPad::waitForChar() {
-  char state;
-  
+void KeyPad::waitInput(){ 
+  currentChar = ' ';
+
   do {
-    state = getKeyPadState();
-  } while(state == ' ');
-  
-  return state;
+    currentChar = getKeyPadState();
+  } while(currentChar == ' ');
 }
 
-int8_t KeyPad::waitForInt() {
-  return waitForChar() - 48;
+bool KeyPad::curCharIsOk(){ 
+  return currentChar == '*';
 }
 
+bool KeyPad::curCharIsCancel(){ 
+  return currentChar == '#';
+}
+
+bool KeyPad::curCharIsDigit(){ 
+  return ('0' <= currentChar && currentChar <= '9');
+}
+
+int8_t KeyPad::curCharAsDigit(){ 
+  return (int8_t)(currentChar - '0');
+}

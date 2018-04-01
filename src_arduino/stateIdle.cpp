@@ -13,6 +13,6 @@ void StateIdle::enter() {
   gGlobals.lcd.setCursor(4, 2);
   gGlobals.lcd.print(F("para comecar"));
 
-  gGlobals.gKeyPad.waitForChar();
+  gGlobals.gKeyPad.waitInput();
   updateGlobalStateToNext();
 }

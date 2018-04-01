@@ -5,7 +5,6 @@
 #include "hardware/keypad.h"
 #include "hardware/chamber.h"
 
-
 struct Globals {
     LiquidCrystal lcd;
     KeyPad gKeyPad;
