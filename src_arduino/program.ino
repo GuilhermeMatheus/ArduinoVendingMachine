@@ -1,25 +1,32 @@
-#include <LiquidCrystal.h>
-#include "hardware/keypad.h"
-#include "hardware/chamber.h"
+#include "globals.h"
+#include "states/state.h"
+#include "states/idleState.h"
+#include "states/testStates.h"
 
-LiquidCrystal lcd(6, 7, 2, 3, 4, 5);
-KeyPad keyPad(A3, A2, A1);
-Chamber chamber;
+static State *gStateCurr = NULL;
+State **State::_p_GlobalState = 0;
+
+static TestState testState(NULL);
+static IdleState idleState(&testState);
+
+static void beforeNextState();
 
 void setup() {
-  lcd.begin(20, 4);
-  chamber.begin();
+  gLcd.begin(20, 4);
+  gChamber.begin();
+
+  State::_p_GlobalState = &gStateCurr;
 }
 
 void loop() {
-
-  for(uint8_t i = 0; i < 4; i++) {
-    for(uint8_t j = 0; j < 4; j++) {
-      chamber.activateHelix(i, j);
-    }
+  if(gStateCurr == NULL) {
+    gStateCurr = &idleState;
   }
 
-  // char c = keyPad.waitForChar();
-  // lcd.setCursor(2, 0);
-  // lcd.print(c);
+  beforeNextState();
+  gStateCurr->enter();
+}
+
+static void beforeNextState() {
+  gLcd.clear();
 }
