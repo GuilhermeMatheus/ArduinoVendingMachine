@@ -5,7 +5,6 @@
 #include "states/testStates.h"
 
 static State *gStateCurr = NULL;
-State **State::_p_GlobalState = 0;
 
 static TestState testState(NULL);
 static IdleState idleState(&testState);

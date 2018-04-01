@@ -10,16 +10,10 @@ private:
 public:
   static State **_p_GlobalState;
 
-  State(State *p_NextState) {
-    _p_NextState = p_NextState;
-  };
+  State(State *p_NextState);
   virtual void enter() = 0;
-  void updateGlobalState(State *p_NextState) {
-    *_p_GlobalState = p_NextState;
-  };
-  void updateGlobalStateToNext() {
-    updateGlobalState(_p_NextState);
-  };
+  void updateGlobalState(State *p_NextState);
+  void updateGlobalStateToNext();
 };
 
 #endif /* STATE_H */
