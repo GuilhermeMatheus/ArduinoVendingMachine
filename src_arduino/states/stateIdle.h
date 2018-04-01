@@ -3,9 +3,9 @@
 
 #include "state.h"
 
-class IdleState : public State {
+class StateIdle : public State {
 public:
-  IdleState(State *pNextState);
+  StateIdle(State *pNextState);
   void enter();
 };
 

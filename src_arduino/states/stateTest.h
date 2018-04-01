@@ -3,9 +3,9 @@
 
 #include "state.h"
 
-class TestState : public State {
+class StateTest : public State {
 public:
-  TestState(State *pNextState);
+  StateTest(State *pNextState);
   void enter();
 };
 

@@ -1,13 +1,13 @@
 #include <LiquidCrystal.h>
 #include "globals.h"
 #include "states/state.h"
-#include "states/idleState.h"
-#include "states/testStates.h"
+#include "states/stateIdle.h"
+#include "states/stateTest.h"
 
 static State *gStateCurr = NULL;
 
-static TestState testState(NULL);
-static IdleState idleState(&testState);
+static StateTest stateTest(NULL);
+static StateIdle stateIdle(&stateTest);
 
 static void beforeNextState();
 
@@ -20,7 +20,7 @@ void setup() {
 
 void loop() {
   if(gStateCurr == NULL) {
-    gStateCurr = &idleState;
+    gStateCurr = &stateIdle;
   }
 
   beforeNextState();
