@@ -8,6 +8,8 @@ namespace {
   uint8_t col4;
 
   char currentChar;
+  int8_t lastCol = -1;
+  int8_t lastValue = -1;
 
   const char charMatrix[][4] PROGMEM = {
     { '1', '4', '7', '*' },
@@ -20,37 +22,46 @@ namespace {
   }
 
   int8_t getColumnState(uint8_t col) {
+    int8_t result = -1;
     int value = analogRead(col);
-    delay(250);
+    delay(100);
 
     if(inRange(value, 242))
-      return 3;
-    
-    if(inRange(value, 507))
-      return 2;
-    
-    if(inRange(value, 765))
-      return 1;
+      result = 3;
+    else if(inRange(value, 507))
+      result = 2;
+    else if(inRange(value, 765))
+      result = 1;
+    else if(inRange(value, 1013))
+      result = 0;
 
-    if(inRange(value, 1013))
-      return 0;
-    
-    return -1;
+    if(lastCol == col) {
+      if(lastValue == result) {
+        return -1;
+      }
+
+      lastValue = result;
+    } else if(result > -1) {
+      lastCol = col;
+      lastValue = result;
+    }
+
+    return result;
   }
 
   char getKeyPadState() {
     int8_t state;
 
     state = getColumnState(col1);
-    if(getColumnState(col1) >= 0)
+    if(state >= 0)
       return pgm_read_byte(&(charMatrix[0][state]));;
     
     state = getColumnState(col2);
-    if(getColumnState(col2) >= 0)
+    if(state >= 0)
       return pgm_read_byte(&(charMatrix[1][state]));;
     
     state = getColumnState(col3);
-    if(getColumnState(col3) >= 0)
+    if(state >= 0)
       return pgm_read_byte(&(charMatrix[2][state]));;
     
     return ' ';
