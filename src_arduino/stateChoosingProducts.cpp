@@ -1,75 +1,130 @@
 #include "states/stateChoosingProducts.h"
+#include "hardware/helpers.h"
 #include <Arduino.h>
 #include "globals.h"
 
 namespace {
 
-  int8_t getProductCode() {
-    int8_t firstDigit;
+  static int8_t getProductCode_Impl() {
+    bool curCharIsDigit = gGlobals.gKeyPad.curCharIsDigit();
+    
+    if (!curCharIsDigit) return -1;
+
+    int8_t firstDigit = gGlobals.gKeyPad.curCharAsDigit();
+    if (firstDigit > 1) {
+      return firstDigit;
+    } else {
+      gGlobals.gLcd.print(firstDigit);
+      gGlobals.gLcd.setCursor(2, 1);
+      
+      gGlobals.gKeyPad.waitInput();
+
+      if (gGlobals.gKeyPad.curCharIsCancel())
+        return -1;
+      
+      if (gGlobals.gKeyPad.curCharIsOk())
+        return firstDigit;
+      
+      return firstDigit * 10 + gGlobals.gKeyPad.curCharAsDigit();                                         
+    }
+  }
+
+  static int8_t getProductCode() {
     int8_t result = -1;
 
-    gGlobals.lcd.setCursor(1, 1);
-    gGlobals.lcd.blink();
-    gGlobals.lcd.cursor();
+    gGlobals.gLcd.setCursor(1, 1);
+    gGlobals.gLcd.blink();
+    gGlobals.gLcd.cursor();
     gGlobals.gKeyPad.waitInput();
     
-    delay(500);
+    result = getProductCode_Impl();
 
-    if (gGlobals.gKeyPad.curCharIsCancel())
-      return -1;
-
-    if (gGlobals.gKeyPad.curCharIsDigit()) {
-      firstDigit = gGlobals.gKeyPad.curCharAsDigit();
-      if (firstDigit > 1) {
-        result = firstDigit;
-      } else {
-        gGlobals.lcd.print(firstDigit);
-        gGlobals.lcd.setCursor(2, 1);
-        
-        gGlobals.gKeyPad.waitInput();
-
-        if (gGlobals.gKeyPad.curCharIsCancel())
-          return -1;
-        
-        if (gGlobals.gKeyPad.curCharIsOk())
-          return firstDigit;
-        
-        result = firstDigit * 10 + gGlobals.gKeyPad.curCharAsDigit();                                         
-      }
-    }
+    gGlobals.gLcd.noBlink();
+    gGlobals.gLcd.noCursor();
 
     return result;
   }
 
-  int8_t askProduct() {
-    gGlobals.lcd.clear();
-    gGlobals.lcd.setCursor(1, 0);
-    gGlobals.lcd.print(F("Escolha um produto"));
-    gGlobals.lcd.setCursor(0, 2);
-    gGlobals.lcd.print(F("--------------------"));
-    gGlobals.lcd.setCursor(0, 3);
-    gGlobals.lcd.print(F("*Ok"));
-    gGlobals.lcd.setCursor(12, 3);
-    gGlobals.lcd.print(F("#Cancela"));
+  static int8_t askProductHelix() {
+    //   ____________________
+    // 0| Escolha um produto
+    // 1| 0_
+    // 2|--------------------
+    // 3| *Ok        #Cancela
+    Helpers::lcdWrite(1, 0, F("Escolha um produto"));
+    Helpers::lcdWriteBottomMenu(HELPERS_CANCEL_BTN);
 
-    uint8_t productCode = getProductCode();
+    return getProductCode();
   }
 
+  // TODO: trocar isto por ponteiro
+  static int8_t confirmProduct(Product prod) {
+
+    gGlobals.gLcd.clear();
+    
+    gGlobals.gLcd.write(prod.name, sizeof(prod.name));
+    gGlobals.gLcd.setCursor(0, 1);
+    gGlobals.gLcd.print(F("R$ "));
+    gGlobals.gLcd.print(prod.price);
+
+    Helpers::lcdWriteBottomMenu();
+  }
+
+  static int16_t askProductId(Product &prod) {
+    int8_t prodHelix = -1;
+    do {
+      prodHelix = askProductHelix();
+    } while(prodHelix < 0);
+
+    prod = gGlobals.gProductRepository.getByHelix(prodHelix);
+    confirmProduct(prod);
+
+    while(true) {
+      gGlobals.gKeyPad.waitInput();
+      if (gGlobals.gKeyPad.curCharIsCancel())
+        return -1;
+      if (gGlobals.gKeyPad.curCharIsOk())
+        return prod.id;
+    }
+  }
 }
 
 StateChoosingProducts::StateChoosingProducts(State *pNextState) : State(pNextState) {
-
+  
 }
 
-void StateChoosingProducts::enter() {
-  //   ____________________
-  // 0| Escolha um produto
-  // 1| 2_
-  // 2|--------------------
-  // 3| *Ok        #Cancela
-  
-  delay(100);
-  int product = askProduct();
+void StateChoosingProducts::begin() {
+  /*
+  for(uint8_t i = 0; i < 16; i+=1) {
+    Product prod;
+    prod.id = i;
+    prod.helix = i+1;
+    prod.count = 10;
+    prod.price = 12.34 * i;
+    memcpy(prod.name, "AbcdefghifklmnopqrsA", sizeof(prod.name));
+    prod.name[0] = i + '0';
+    prod.name[19] = i + '0';
+    gGlobals.gProductRepository.add(prod);
+  }
+  */
+}
 
-  //updateGlobalStateToNext();
+void StateChoosingProducts::enter() {  
+  delay(100);
+
+  gGlobals.gLcd.clear();
+
+  int16_t prodId = askProductId(gGlobals.gCurProd);
+  
+  gGlobals.gLcd.clear();
+  gGlobals.gLcd.print(prodId, DEC);
+  gGlobals.gLcd.setCursor(0, 1);
+  gGlobals.gLcd.write(gGlobals.gCurProd.name, sizeof(gGlobals.gCurProd.name));
+  delay(1000);
+
+  if(prodId >= 0) {
+    updateGlobalStateToNext();
+  } else {
+    goToInitialState();
+  }
 }

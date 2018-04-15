@@ -7,6 +7,7 @@ class StateChoosingProducts : public State {
 public:
   StateChoosingProducts(State *pNextState);
   void enter();
+  void begin();
 };
 
 #endif /* STATECHOOSINGPRODUCTS_H */

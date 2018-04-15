@@ -7,11 +7,11 @@ StateIdle::StateIdle(State *pNextState) : State(pNextState) {
 }
 
 void StateIdle::enter() {
-  gGlobals.lcd.setCursor(5, 1);
-  gGlobals.lcd.print(F("Tecle algo"));
+  gGlobals.gLcd.setCursor(5, 1);
+  gGlobals.gLcd.print(F("Tecle algo"));
   
-  gGlobals.lcd.setCursor(4, 2);
-  gGlobals.lcd.print(F("para comecar"));
+  gGlobals.gLcd.setCursor(4, 2);
+  gGlobals.gLcd.print(F("para comecar"));
 
   gGlobals.gKeyPad.waitInput();
   updateGlobalStateToNext();

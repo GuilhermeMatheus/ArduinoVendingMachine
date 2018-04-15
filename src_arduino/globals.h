@@ -4,11 +4,15 @@
 #include <LiquidCrystal.h>
 #include "hardware/keypad.h"
 #include "hardware/chamber.h"
+#include "entities/product.h"
+#include "entities/productRepository.h"
 
 struct Globals {
-    LiquidCrystal lcd;
+    Product gCurProd;
+    LiquidCrystal gLcd;
     KeyPad gKeyPad;
     Chamber gChamber;
+    ProductRepository gProductRepository;
 };
 
 extern struct Globals gGlobals;

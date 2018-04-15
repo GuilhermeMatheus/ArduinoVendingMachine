@@ -1,3 +1,6 @@
+#define DEBUG
+#undef DEBUG
+
 #include <LiquidCrystal.h>
 #include "globals.h"
 #include "states/state.h"
@@ -14,10 +17,15 @@ static StateIdle stateIdle(&stateChoosingProducts);
 static void beforeNextState();
 
 void setup() {
-  gGlobals.lcd.begin(20, 4);
+  Serial.begin(9600);
+  gGlobals.gLcd.begin(20, 4);
   gGlobals.gChamber.begin();
 
+  stateChoosingProducts.begin();
+  //stateChoosingProducts.setNextState(&stateIdle);
+
   State::_p_GlobalState = &gStateCurr;
+  State::_p_InitialState = &stateIdle;
 }
 
 void loop() {
@@ -32,24 +40,23 @@ void loop() {
 }
 
 static void beforeNextState() {
-  gGlobals.lcd.clear();
-  gGlobals.lcd.noCursor();
+  gGlobals.gLcd.clear();
+  gGlobals.gLcd.noCursor();
 }
-
 
 /*
 while(true) {
-  gGlobals.lcd.clear();
+  gGlobals.gLcd.clear();
   gGlobals.gKeyPad.waitInput();
 
-  gGlobals.lcd.setCursor(0, 0);
-  gGlobals.lcd.write(gGlobals.gKeyPad.curCharIsCancel() ? "Cancelar" : "Nao cancelar");
-  gGlobals.lcd.setCursor(0, 1);
-  gGlobals.lcd.write(gGlobals.gKeyPad.curCharIsOk() ? "Ok" : "Nao ok");
-  gGlobals.lcd.setCursor(0, 2);
-  gGlobals.lcd.write(gGlobals.gKeyPad.curCharIsDigit() ? "Eh digito" : "Nao eh digito");
-  gGlobals.lcd.setCursor(0, 3);
-  gGlobals.lcd.print(gGlobals.gKeyPad.curCharAsDigit());
+  gGlobals.gLcd.setCursor(0, 0);
+  gGlobals.gLcd.write(gGlobals.gKeyPad.curCharIsCancel() ? "Cancelar" : "Nao cancelar");
+  gGlobals.gLcd.setCursor(0, 1);
+  gGlobals.gLcd.write(gGlobals.gKeyPad.curCharIsOk() ? "Ok" : "Nao ok");
+  gGlobals.gLcd.setCursor(0, 2);
+  gGlobals.gLcd.write(gGlobals.gKeyPad.curCharIsDigit() ? "Eh digito" : "Nao eh digito");
+  gGlobals.gLcd.setCursor(0, 3);
+  gGlobals.gLcd.print(gGlobals.gKeyPad.curCharAsDigit());
 
   delay(3000);
 }

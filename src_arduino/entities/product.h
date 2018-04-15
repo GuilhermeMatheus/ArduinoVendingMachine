@@ -3,14 +3,12 @@
 
 class Product
 {
-  float price;
-  int helix;
-  char* p_name;
-
 public:
-  Product(float price, char* name, int helix);
-  float GetPrice();
-  char* GetName();
+  uint8_t id; // server id
+  uint8_t helix;
+  uint8_t count;
+  float price;
+  char name[20]; 
 };
 
 
