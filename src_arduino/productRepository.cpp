@@ -2,8 +2,6 @@
 #include <Arduino.h>
 #include <EEPROM.h>
 
-#undef DEBUG
-
 namespace {
   static Product fromBytes(char* addr) {
     union {

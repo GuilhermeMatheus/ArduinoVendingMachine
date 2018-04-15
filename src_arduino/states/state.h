@@ -13,7 +13,6 @@ public:
 
   State(State *p_NextState);
   virtual void enter() = 0;
-  void setNextState(State *p_NextState);
   void updateGlobalState(State *p_NextState);
   void updateGlobalStateToNext();
   void goToInitialState();
