@@ -13,6 +13,5 @@ void StateActivateChamber::enter() {
 
   gGlobals.gChamber.activateHelix(gGlobals.gCurProd.helix);
 
-  delay(1500);
   goToInitialState();
 }

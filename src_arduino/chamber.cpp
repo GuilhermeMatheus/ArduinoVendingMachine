@@ -66,6 +66,6 @@ uint8_t Chamber::activateHelix(uint8_t line, uint8_t col) {
   val = 1 << idx;
   
   writeInSection(addr, val);  
-  delay(500);
+  delay(3000);
   clearSection(addr);
 }
