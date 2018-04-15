@@ -95,10 +95,10 @@ StateChoosingProducts::StateChoosingProducts(State *pNextState) : State(pNextSta
 
 void StateChoosingProducts::begin() {
   /*
-  for(uint8_t i = 0; i < 16; i+=1) {
+  for(uint8_t i = 1; i <= 16; i+=1) {
     Product prod;
     prod.id = i;
-    prod.helix = i+1;
+    prod.helix = i;
     prod.count = 10;
     prod.price = 12.34 * i;
     memcpy(prod.name, "AbcdefghifklmnopqrsA", sizeof(prod.name));
