@@ -6,6 +6,7 @@
 #include "hardware/chamber.h"
 #include "entities/product.h"
 #include "entities/productRepository.h"
+#include "server/serverBridge.h"
 
 struct Globals {
     Product gCurProd;
@@ -13,6 +14,7 @@ struct Globals {
     KeyPad gKeyPad;
     Chamber gChamber;
     ProductRepository gProductRepository;
+    ServerBridge gServerBridge;
 };
 
 extern struct Globals gGlobals;

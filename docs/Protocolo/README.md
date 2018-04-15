@@ -20,3 +20,4 @@ As ações permitidas por este protocolo são restritas. **Toda comunicação po
 |0x00  | VendingMachine  | [Venda](Venda.md)
 |0x01  | VendingMachine  | [Estorno](Estorno.md)
 |0x02  | Servidor  | [Atualização de preços](AtualizacaoDePrecos.md)
+|0x03  | VendingMachine  | [Inicialização de máquina](InicializacaoMaquina.md)

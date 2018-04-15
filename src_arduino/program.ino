@@ -24,6 +24,7 @@ void setup() {
   Serial.begin(9600);
   gGlobals.gLcd.begin(20, 4);
   gGlobals.gChamber.begin();
+  gGlobals.gServerBridge.begin();
 
   stateChoosingProducts.begin();
 
