@@ -35,6 +35,8 @@ namespace VendingMachine.Server.Request
             
             _bytesFrom = new byte[20];
             networkStream.Read(_bytesFrom, 0, _bytesFrom.Length);
+
+            Console.WriteLine($"Connection from: {_clientSocket.Client.RemoteEndPoint}");
         }
     }
 }
