@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,13 +10,8 @@ namespace VendingMachine.EF
 {
     public class VendingMachineDbContext : DbContext
     {
-        public VendingMachineDbContext()
-            : this("DefaultConnection")
-        {
-        }
-
-        public VendingMachineDbContext(string nameOrConnectionString) 
-            : base(nameOrConnectionString)
+        public VendingMachineDbContext(DbContextOptions options) 
+            : base(options)
         {
         }
 

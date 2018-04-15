@@ -10,6 +10,7 @@ namespace VendingMachine.Server.Actions
     {
         Sale = 0x00,
         Repayment = 0x01,
-        PriceUpdate = 0x02
+        PriceUpdate = 0x02,
+        MachineStartup = 0x03
     }
 }

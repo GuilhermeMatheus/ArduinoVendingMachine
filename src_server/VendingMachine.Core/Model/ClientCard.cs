@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace VendingMachine.Core.Model
 {
@@ -12,7 +10,7 @@ namespace VendingMachine.Core.Model
         [Key]
         public virtual long Rfid { get; set; }
 
-        [Display(Name ="Apelido")]
+        [Display(Name = "Apelido")]
         public virtual string Alias { get; set; }
 
         [Display(Name = "Crédito")]

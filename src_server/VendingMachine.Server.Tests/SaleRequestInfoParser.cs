@@ -1,13 +1,12 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using Xunit;
 using VendingMachine.Server.Sale;
 
 namespace VendingMachine.Server.Tests
 {
-    [TestClass]
     public class SaleRequestInfoParser
     {
-        [TestMethod]
+        [Fact]
         public void TestSaleRequestInfoParser()
         {
             byte[] incommingData = {
@@ -21,11 +20,11 @@ namespace VendingMachine.Server.Tests
 
             var result = Sale.SaleRequestInfoParser.Parse(incommingData);
 
-            Assert.AreEqual(36, result.MachineId);
-            Assert.AreEqual(4294967295L, result.ClientCardId);
-            Assert.AreEqual(2, result.ItemsCount);
-            CollectionAssert.AreEqual(new byte[] { 18, 19 }, result.ItemsId);
-            Assert.AreEqual(2.5f, result.Price);
+            Assert.Equal(36, result.MachineId);
+            Assert.Equal(4294967295L, result.ClientCardId);
+            Assert.Equal(2, result.ItemsCount);
+            Assert.Equal(new byte[] { 18, 19 }, result.ItemsId);
+            Assert.Equal(2.5f, result.Price);
         }
     }
 }
