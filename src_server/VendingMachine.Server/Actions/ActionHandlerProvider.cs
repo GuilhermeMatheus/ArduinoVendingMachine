@@ -29,6 +29,8 @@ namespace VendingMachine.Server.Actions
                     return new RepaymentActionHandler();
 
                 case ActionType.MachineStartup:
+                    return new MachineStartupActionHandler();
+
                 case ActionType.PriceUpdate:
                 default:
                     throw new ActionNotSupportedException((byte)actionContext.Type);
