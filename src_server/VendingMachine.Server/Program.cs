@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Autofac;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -15,33 +16,26 @@ using VendingMachine.Server.Actions;
 using VendingMachine.Server.Exceptions;
 using VendingMachine.Server.Request;
 
-
 [assembly: InternalsVisibleTo("VendingMachine.Server.Tests")]
-
 namespace VendingMachine.Server
 {
     class Program
     {
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
-            var contextProvider = new ActionContextProvider();
+            var container = GetContainer();
+            using (var scope = container.BeginLifetimeScope())
+            {
+                var requestListener = scope.Resolve<TcpRequestListener>();
+                StartRequestListener(requestListener);
+            }
+        }
 
-            var optionsBuilder = new DbContextOptionsBuilder<VendingMachineDbContext>();
-            optionsBuilder.UseSqlServer("Data Source=(LocalDB)\\MSSQLLocalDB;Database=VendingMachine;trusted_connection=true");
-            var dbContext = new VendingMachineDbContext(optionsBuilder.Options);
-
-            var clientCardRepository = new ClientCardRepository(dbContext);
-            var machineRepository = new MachineRepository(dbContext);
-            var productRepository = new ProductRepository(dbContext);
-            var transactionRepository = new TransactionRepository(dbContext);
-            var saleService = new SaleService(clientCardRepository, machineRepository, productRepository, transactionRepository);
-            var handlerProvider = new ActionHandlerProvider(saleService);
-            var requestListener = new TcpRequestListener(contextProvider, handlerProvider);
-
+        private static void StartRequestListener(TcpRequestListener requestListener)
+        {
             requestListener.Start();
 
             while (true)
-            {
                 try
                 {
                     requestListener.Listen();
@@ -50,7 +44,37 @@ namespace VendingMachine.Server
                 {
                     Console.WriteLine(ex.Message);
                 }
-            }
+        }
+
+        private static IContainer GetContainer()
+        {
+            var builder = new ContainerBuilder();
+
+            builder.Register(
+                c =>
+                {
+                    var optionsBuilder = new DbContextOptionsBuilder<VendingMachineDbContext>();
+                    optionsBuilder.UseSqlServer("Data Source=(LocalDB)\\MSSQLLocalDB;Database=VendingMachine;trusted_connection=true");
+                    var dbContext = new VendingMachineDbContext(optionsBuilder.Options);
+                    return dbContext;
+                })
+                .As<DbContext>();
+
+            builder.RegisterAssemblyTypes(typeof(ClientCardRepository).Assembly)
+                   .Where(t => t.Name.EndsWith("Repository"))
+                   .AsImplementedInterfaces();
+
+            builder.RegisterAssemblyTypes(typeof(SaleService).Assembly)
+                   .Where(t => t.Name.EndsWith("Service"))
+                   .AsImplementedInterfaces();
+
+            builder.RegisterAssemblyTypes(typeof(ActionHandlerProvider).Assembly)
+                   .Where(t => t.Name.EndsWith("Provider"))
+                   .AsImplementedInterfaces();
+
+            builder.RegisterType<TcpRequestListener>();
+
+            return builder.Build();
         }
     }
 }
