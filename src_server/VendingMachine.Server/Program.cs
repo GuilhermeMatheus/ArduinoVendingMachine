@@ -55,7 +55,7 @@ namespace VendingMachine.Server
             var serviceCollection = new ServiceCollection();
 
             serviceCollection.AddSingleton(new LoggerFactory()
-                .AddConsole()
+                .AddConsole(LogLevel.Trace)
                 .AddDebug());
 
             serviceCollection.AddLogging();

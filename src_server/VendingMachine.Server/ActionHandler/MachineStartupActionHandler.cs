@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Text;
@@ -18,17 +19,25 @@ namespace VendingMachine.Server.ActionHandler
     {
         private readonly IVendingMachineControlService _machineControlService;
         private readonly IMachineRepository _machineRepository;
+        private readonly ILogger<MachineStartupActionHandler> _logger;
 
-        public MachineStartupActionHandler(IMachineRepository machineRepository, IVendingMachineControlService machineControlService)
+        public MachineStartupActionHandler(
+            IMachineRepository machineRepository,
+            IVendingMachineControlService machineControlService,
+            ILogger<MachineStartupActionHandler> logger)
         {
             _machineRepository = machineRepository ?? throw new ArgumentNullException(nameof(machineRepository));
             _machineControlService = machineControlService ?? throw new ArgumentNullException(nameof(machineControlService));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         public byte[] Process(ActionContext context)
         {
             var machineIpEndPoint = (IPEndPoint)context.IncomingMessage["machine:IPEndPoint"];
             var machineId = (int)context.IncomingMessage.RawBytes[1];
+
+            _logger.LogTrace($"machine:IPEndPoint is {machineIpEndPoint}");
+            _logger.LogTrace($"machineId is {machineId}");
 
             var machine = _machineRepository.Get(machineId);
             if (machine == null)
