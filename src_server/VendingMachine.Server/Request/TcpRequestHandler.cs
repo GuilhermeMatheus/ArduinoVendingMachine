@@ -22,7 +22,7 @@ namespace VendingMachine.Server.Request
         public RequestData GetRequestData()
         {
             var result = new RequestData(_bytesFrom);
-            result["machine:ip"] = _clientSocket.Client.RemoteEndPoint;
+            result["machine:IPEndPoint"] = _clientSocket.Client.RemoteEndPoint;
 
             return result;
         }

@@ -9,6 +9,7 @@ using System.Net.Sockets;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using VendingMachine.Core.Repository;
 using VendingMachine.Core.Services;
 using VendingMachine.EF;
 using VendingMachine.EF.Repository;
@@ -31,7 +32,7 @@ namespace VendingMachine.Server
             }
         }
 
-        private static void StartRequestListener(TcpRequestListener requestListener)
+        private static void StartRequestListener(IRequestListener requestListener)
         {
             requestListener.Start();
 
@@ -54,11 +55,13 @@ namespace VendingMachine.Server
                 c =>
                 {
                     var optionsBuilder = new DbContextOptionsBuilder<VendingMachineDbContext>();
-                    optionsBuilder.UseSqlServer("Data Source=(LocalDB)\\MSSQLLocalDB;Database=VendingMachine;trusted_connection=true");
+                    optionsBuilder.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Database=VendingMachine;trusted_connection=true;Integrated Security=True");
                     var dbContext = new VendingMachineDbContext(optionsBuilder.Options);
+                    dbContext.Database.EnsureCreated();
                     return dbContext;
                 })
-                .As<DbContext>();
+                .As<DbContext>()
+                .InstancePerLifetimeScope();
 
             builder.RegisterAssemblyTypes(typeof(ClientCardRepository).Assembly)
                    .Where(t => t.Name.EndsWith("Repository"))

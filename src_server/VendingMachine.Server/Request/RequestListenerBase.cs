@@ -7,7 +7,7 @@ using VendingMachine.Server.Actions;
 
 namespace VendingMachine.Server.Request
 {
-    public abstract class RequestListenerBase : IDisposable
+    public abstract class RequestListenerBase : IDisposable, IRequestListener
     {
         private readonly IActionContextProvider _contextProvider;
         private readonly IActionHandlerProvider _actionHandlerProvider;

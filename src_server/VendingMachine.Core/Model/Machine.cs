@@ -18,5 +18,7 @@ namespace VendingMachine.Core.Model
 
         [Display(Name = "Endereço")]
         public virtual string Address { get; set; }
+
+        public virtual string IPEndPoint { get; set; }
     }
 }
