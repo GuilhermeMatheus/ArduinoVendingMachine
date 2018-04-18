@@ -34,13 +34,5 @@ namespace VendingMachine.Server.Sale
                 itemsId: itemsId,
                 price: price);
         }
-
-        public static byte[] ParseResponse(OperationResult<SaleOperationResult> result)
-        {
-            if (result == null)
-                throw new ArgumentNullException(nameof(result));
-
-            throw new NotImplementedException();
-        }
     }
 }

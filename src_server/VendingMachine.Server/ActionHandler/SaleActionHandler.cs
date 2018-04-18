@@ -34,7 +34,7 @@ namespace VendingMachine.Server.ActionHandler
 
             var saleResult = _saleService.Sale(saleOperation);
 
-            return SaleRequestInfoParser.ParseResponse(saleResult);
+            throw new NotImplementedException();
         }
     }
 }

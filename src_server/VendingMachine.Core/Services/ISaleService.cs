@@ -9,6 +9,6 @@ namespace VendingMachine.Core.Services
 {
     public interface ISaleService
     {
-        OperationResult<SaleOperationResult> Sale(SaleOperation sale);
+        OperationResult Sale(SaleOperation sale);
     }
 }

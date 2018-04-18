@@ -29,35 +29,35 @@ namespace VendingMachine.Core.Services
         }
 
         //TODO: Review floating points comparisons
-        public OperationResult<SaleOperationResult> Sale(SaleOperation sale)
+        public OperationResult Sale(SaleOperation sale)
         {
-            var result = default(SaleOperationResult);
-
             var decimalPrice = new decimal(sale.Price);
             var machine = _machineRepository.Get(sale.MachineId);
             var client = _clientCardRepository.Get(sale.ClientCardId);
             var products = _productRepository.GetMany(sale.ItemsId.Cast<int>()).ToList();
 
+            var errors = new List<OperationError>();
+
             if (client == null)
-                result += SaleOperationResult.WithClientNotFound();
-            else if (client.Credit < decimalPrice)
-                result += SaleOperationResult.WithNotEnoughCredit();
+                errors.Add(OperationErrorFactory.FromWellKnowErrors(WellKnowErrors.ClientNotFound));
+
+            if (client != null && client.Credit < decimalPrice)
+                errors.Add(OperationErrorFactory.FromWellKnowErrors(WellKnowErrors.ClientWithNoEnoughCredit));
 
             if (products.Count != sale.ItemsCount)
-                result += SaleOperationResult.WithInvalidProduct();
+                errors.Add(OperationErrorFactory.FromWellKnowErrors(WellKnowErrors.InvalidProduct));
 
             if (products.Sum(_ => _.Price) != decimalPrice)
-                result += SaleOperationResult.WithInvalidPrice();
+                errors.Add(OperationErrorFactory.FromWellKnowErrors(WellKnowErrors.InvalidPrice));
 
             if (products.Count != sale.ItemsCount)
-                result += SaleOperationResult.WithInvalidProduct();
+                errors.Add(OperationErrorFactory.FromWellKnowErrors(WellKnowErrors.InvalidProduct));
 
-            var success = result.Equals(default);
+            if(errors.Any())
+                return OperationResult.Failed(errors.ToArray());
 
-            if (success)
-                DoTransaction(client, machine, products, decimalPrice);
-
-            return new OperationResult<SaleOperationResult>(success, result);
+            DoTransaction(client, machine, products, decimalPrice);
+            return OperationResult.Success;
         }
 
         //TODO: we know its not a transaction

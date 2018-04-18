@@ -4,7 +4,7 @@ using VendingMachine.Server.Sale;
 
 namespace VendingMachine.Server.Tests
 {
-    public class SaleRequestInfoParser
+    public class SaleRequestInfoParserTests
     {
         [Fact]
         public void TestSaleRequestInfoParser()
@@ -18,7 +18,7 @@ namespace VendingMachine.Server.Tests
                 0x00, 0x00, 0x20, 0x40 // Price: 2.5
             };
 
-            var result = Sale.SaleRequestInfoParser.Parse(incommingData);
+            var result = SaleRequestInfoParser.Parse(incommingData);
 
             Assert.Equal(36, result.MachineId);
             Assert.Equal(4294967295L, result.ClientCardId);
