@@ -55,7 +55,7 @@ Exemplo
 
 A resposta com a cadeia de bytes abaixo:
 
-    0x01
+    0x80
     
 Traz o valor:
 - **StartEventResult:** Sucesso;
