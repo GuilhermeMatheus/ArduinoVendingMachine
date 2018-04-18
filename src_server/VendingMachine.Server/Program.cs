@@ -72,6 +72,11 @@ namespace VendingMachine.Server
                    .Where(t => t.Name.EndsWith("Provider"))
                    .AsImplementedInterfaces();
 
+
+            builder.RegisterAssemblyTypes(typeof(ActionHandlerProvider).Assembly)
+                   .Where(t => t.Name.EndsWith("ActionHandler"))
+                   .AsSelf();
+
             builder.RegisterType<TcpRequestListener>();
 
             return builder.Build();
