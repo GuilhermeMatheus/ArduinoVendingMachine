@@ -1,5 +1,8 @@
 ﻿using Autofac;
+using Autofac.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
@@ -49,6 +52,14 @@ namespace VendingMachine.Server
 
         private static IContainer GetContainer()
         {
+            var serviceCollection = new ServiceCollection();
+
+            serviceCollection.AddSingleton(new LoggerFactory()
+                .AddConsole()
+                .AddDebug());
+
+            serviceCollection.AddLogging();
+
             var builder = new ContainerBuilder();
 
             builder.Register(
@@ -74,13 +85,14 @@ namespace VendingMachine.Server
             builder.RegisterAssemblyTypes(typeof(ActionHandlerProvider).Assembly)
                    .Where(t => t.Name.EndsWith("Provider"))
                    .AsImplementedInterfaces();
-
-
+            
             builder.RegisterAssemblyTypes(typeof(ActionHandlerProvider).Assembly)
                    .Where(t => t.Name.EndsWith("ActionHandler"))
                    .AsSelf();
 
             builder.RegisterType<TcpRequestListener>();
+
+            builder.Populate(serviceCollection);
 
             return builder.Build();
         }

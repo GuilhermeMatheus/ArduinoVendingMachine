@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,11 +12,13 @@ namespace VendingMachine.Server.Request
     {
         private readonly IActionContextProvider _contextProvider;
         private readonly IActionHandlerProvider _actionHandlerProvider;
+        private ILogger _logger;
 
-        public RequestListenerBase(IActionContextProvider contextProvider, IActionHandlerProvider actionHandlerProvider)
+        public RequestListenerBase(IActionContextProvider contextProvider, IActionHandlerProvider actionHandlerProvider, ILogger<RequestListenerBase> logger)
         {
             _contextProvider = contextProvider ?? throw new ArgumentNullException(nameof(contextProvider));
             _actionHandlerProvider = actionHandlerProvider ?? throw new ArgumentNullException(nameof(actionHandlerProvider));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         public abstract void Start();

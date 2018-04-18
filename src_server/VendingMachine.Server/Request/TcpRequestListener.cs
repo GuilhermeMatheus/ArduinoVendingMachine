@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Linq;
@@ -13,21 +14,41 @@ namespace VendingMachine.Server.Request
     public sealed class TcpRequestListener : RequestListenerBase
     {
         private readonly int _tcpPort;
+        private readonly IPAddress _IPAddress;
+
         private TcpListener _serverSocket;
+        private ILogger _logger;
 
-        public TcpRequestListener(IActionContextProvider contextProvider, IActionHandlerProvider actionHandlerProvider)
-            :base(contextProvider, actionHandlerProvider)
+        public TcpRequestListener(
+            IActionContextProvider contextProvider,
+            IActionHandlerProvider actionHandlerProvider,
+            ILogger<TcpRequestListener> logger,
+            ILogger<RequestListenerBase> baseLogger
+            )
+            :base(contextProvider, actionHandlerProvider, baseLogger)
         {
-            var config = ConfigurationManager.AppSettings["tcp:port"];
-
-            _tcpPort = Int32.TryParse(config, out int port)
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            
+            //TODO: Remove ConfigurationManager from .NET Framework style
+            var tcpPort = ConfigurationManager.AppSettings["tcp:port"];
+            var ipAddr = ConfigurationManager.AppSettings["ip:addr"];
+            
+            _tcpPort = Int32.TryParse(tcpPort, out int port)
                 ? port
                 : 4444;
+
+            _IPAddress = IPAddress.TryParse(ipAddr, out IPAddress addr)
+                ? addr
+                : IPAddress.Any;
         }
 
         public override void Start()
         {
-            _serverSocket = new TcpListener(IPAddress.Any, _tcpPort);
+            _logger.LogInformation("Starting server socket.");
+            _logger.LogInformation($"IP:Address is {_IPAddress}");
+            _logger.LogInformation($"TCP:Port is {_tcpPort}");
+
+            _serverSocket = new TcpListener(_IPAddress, _tcpPort);
             _serverSocket.Start();
         }
 
