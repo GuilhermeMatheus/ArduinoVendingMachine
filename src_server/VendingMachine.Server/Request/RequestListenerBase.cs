@@ -39,7 +39,7 @@ namespace VendingMachine.Server.Request
         {
             var requestHandler = await GetRequestHandler();
 
-            var requestBytes = requestHandler.GetRequestBytes();
+            var requestBytes = requestHandler.GetRequestData();
             var context = GetContext(requestBytes);
             var handler = GetHandler(context);
 
@@ -50,8 +50,8 @@ namespace VendingMachine.Server.Request
 
         protected abstract Task<IRequestHandler> GetRequestHandler();
 
-        protected virtual ActionContext GetContext(byte[] bytes) =>
-            _contextProvider.GetContext(bytes);
+        protected virtual ActionContext GetContext(RequestData data) =>
+            _contextProvider.GetContext(data);
 
         protected virtual IActionHandler GetHandler(ActionContext actionContext) =>
             _actionHandlerProvider.GetActionHandler(actionContext);

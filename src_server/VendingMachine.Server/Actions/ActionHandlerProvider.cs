@@ -11,11 +11,18 @@ namespace VendingMachine.Server.Actions
 {
     public class ActionHandlerProvider : IActionHandlerProvider
     {
-        private readonly ISaleService _saleService;
+        private readonly SaleActionHandler _saleActionHandler;
+        private readonly RepaymentActionHandler _repaymentActionHandler;
+        private readonly MachineStartupActionHandler _machineStartupActionHandler;
 
-        public ActionHandlerProvider(ISaleService saleService)
+        public ActionHandlerProvider(
+            SaleActionHandler saleActionHandler,
+            RepaymentActionHandler repaymentActionHandler,
+            MachineStartupActionHandler machineStartupActionHandler)
         {
-            _saleService = saleService ?? throw new ArgumentNullException(nameof(saleService));
+            _saleActionHandler = saleActionHandler ?? throw new ArgumentNullException(nameof(saleActionHandler));
+            _repaymentActionHandler = repaymentActionHandler ?? throw new ArgumentNullException(nameof(repaymentActionHandler));
+            _machineStartupActionHandler = machineStartupActionHandler ?? throw new ArgumentNullException(nameof(machineStartupActionHandler));
         }
 
         public IActionHandler GetActionHandler(ActionContext actionContext)
@@ -23,13 +30,13 @@ namespace VendingMachine.Server.Actions
             switch (actionContext.Type)
             {
                 case ActionType.Sale:
-                    return new SaleActionHandler(_saleService);
+                    return _saleActionHandler;
 
                 case ActionType.Repayment:
-                    return new RepaymentActionHandler();
+                    return _repaymentActionHandler;
 
                 case ActionType.MachineStartup:
-                    return new MachineStartupActionHandler();
+                    return _machineStartupActionHandler;
 
                 case ActionType.PriceUpdate:
                 default:

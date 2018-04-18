@@ -19,7 +19,13 @@ namespace VendingMachine.Server.Request
             SetNetworkStream(clientSocket.GetStream());
         }
 
-        public byte[] GetRequestBytes() => _bytesFrom;
+        public RequestData GetRequestData()
+        {
+            var result = new RequestData(_bytesFrom);
+            result["machine:ip"] = _clientSocket.Client.RemoteEndPoint;
+
+            return result;
+        }
 
         public async Task SendResponse(byte[] data)
         {
@@ -35,8 +41,6 @@ namespace VendingMachine.Server.Request
             
             _bytesFrom = new byte[20];
             networkStream.Read(_bytesFrom, 0, _bytesFrom.Length);
-
-            Console.WriteLine($"Connection from: {_clientSocket.Client.RemoteEndPoint}");
         }
     }
 }

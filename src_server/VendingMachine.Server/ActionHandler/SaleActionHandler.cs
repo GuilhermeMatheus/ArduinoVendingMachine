@@ -21,9 +21,9 @@ namespace VendingMachine.Server.ActionHandler
 
         public byte[] Process(ActionContext context)
         {
-            var bytes = context.IncomingMessage;
+            var data = context.IncomingMessage;
 
-            var sri = SaleRequestInfoParser.Parse(bytes);
+            var sri = SaleRequestInfoParser.Parse(data.RawBytes);
             var saleOperation = new SaleOperation(
                 machineId: sri.MachineId,
                 clientCardId: sri.ClientCardId,
