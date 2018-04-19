@@ -8,14 +8,14 @@
 #include "states/statePayment.h"
 #include "states/stateServerTransaction.h"
 #include "states/stateActivateChamber.h"
+#include "hardware/helpers.h"
 
 static State *gStateCurr = NULL;
 
 static StateActivateChamber stateActivateChamber(NULL);
 static StateServerTransaction stateServerTransaction(&stateActivateChamber);
 static StatePayment statePayment(&stateServerTransaction);
-//static StateChoosingProducts stateChoosingProducts(&statePayment);
-static StateChoosingProducts stateChoosingProducts(&stateActivateChamber);
+static StateChoosingProducts stateChoosingProducts(&statePayment);
 static StateIdle stateIdle(&stateChoosingProducts);
 
 static void beforeNextState();
@@ -23,8 +23,11 @@ static void beforeNextState();
 void setup() {
   Serial.begin(9600);
   gGlobals.gLcd.begin(20, 4);
+
+  Helpers::lcdWriteBuildTime();
   gGlobals.gChamber.begin();
   gGlobals.gServerBridge.begin();
+  gGlobals.gWalletProvider.begin();
 
   stateChoosingProducts.begin();
 
@@ -35,8 +38,8 @@ void setup() {
 void loop() {
 
   if(gStateCurr == NULL) {
-    //gStateCurr = &stateIdle;
-    gStateCurr = &stateChoosingProducts;
+    gStateCurr = &stateIdle;
+    //gStateCurr = &statePayment;
   }
 
   beforeNextState();
