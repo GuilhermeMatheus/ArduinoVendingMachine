@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace VendingMachine.Server.Helpers
 {
-    public static class ByteHelper
+    internal static class ByteHelper
     {
         public static short GetMachineId(ReadOnlySpan<byte> bytes, int startByte)
         { 
@@ -34,5 +34,9 @@ namespace VendingMachine.Server.Helpers
 
             return longClientId;
         }
+
+        public static string ByteArrayToString(byte[] bytes) =>
+            BitConverter.ToString(bytes);
+
     }
 }
