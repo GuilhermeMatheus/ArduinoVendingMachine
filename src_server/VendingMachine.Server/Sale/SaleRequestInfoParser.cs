@@ -22,10 +22,10 @@ namespace VendingMachine.Server.Sale
             var clientCardId = GetMifareId(bytes, 3);
             var itemsCount = bytes[7];
             
-            var bytesThatWeCannotUseAsSpan = bytes.Slice(8).ToArray();
-            var itemsId = bytesThatWeCannotUseAsSpan.Take(itemsCount).ToArray();
+            var priceBytes = bytes.Slice(8 + itemsCount, 4).ToArray();
+            var itemsId = bytes.Slice(8, itemsCount).ToArray();
             
-            var price = BitConverter.ToSingle(bytesThatWeCannotUseAsSpan, itemsCount);
+            var price = BitConverter.ToSingle(priceBytes, 0);
 
             return new SaleRequestInfo(
                 machineId: vendingMachineId,
