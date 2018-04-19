@@ -6,6 +6,7 @@ using System.Text;
 using VendingMachine.Core.Repository;
 using VendingMachine.Core.Services;
 using VendingMachine.Server.Actions;
+using VendingMachine.Server.Helpers;
 
 namespace VendingMachine.Server.ActionHandler
 {
@@ -34,7 +35,7 @@ namespace VendingMachine.Server.ActionHandler
         public byte[] Process(ActionContext context)
         {
             var machineIpEndPoint = (IPEndPoint)context.IncomingMessage["machine:IPEndPoint"];
-            var machineId = (int)context.IncomingMessage.RawBytes[1];
+            var machineId = ByteHelper.GetMachineId(context.IncomingMessage.RawBytes, 1);
 
             _logger.LogTrace($"machine:IPEndPoint is {machineIpEndPoint}");
             _logger.LogTrace($"machineId is {machineId}");
