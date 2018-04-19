@@ -25,12 +25,18 @@ namespace VendingMachine.Server
 {
     class Program
     {
+        private static ILogger<Program> _logger;
+
         private static void Main(string[] args)
         {
+            Console.WriteLine("Initializing server. . .");
             var container = GetContainer();
             using (var scope = container.BeginLifetimeScope())
             {
                 var requestListener = scope.Resolve<TcpRequestListener>();
+                _logger = scope.Resolve<ILogger<Program>>();
+                _logger.LogInformation("Starting");
+
                 StartRequestListener(requestListener);
             }
         }
@@ -44,9 +50,9 @@ namespace VendingMachine.Server
                 {
                     requestListener.Listen();
                 }
-                catch (ActionNotSupportedException ex)
+                catch (Exception ex)
                 {
-                    Console.WriteLine(ex.Message);
+                    _logger.LogCritical(ex, "Ops. Something went wrong.");
                 }
         }
 

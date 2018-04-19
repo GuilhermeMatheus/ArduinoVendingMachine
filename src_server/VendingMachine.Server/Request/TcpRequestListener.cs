@@ -17,17 +17,23 @@ namespace VendingMachine.Server.Request
         private readonly IPAddress _IPAddress;
 
         private TcpListener _serverSocket;
+        private ILoggerFactory _loggerFactory;
         private ILogger _logger;
 
         public TcpRequestListener(
             IActionContextProvider contextProvider,
             IActionHandlerProvider actionHandlerProvider,
-            ILogger<TcpRequestListener> logger,
+            ILoggerFactory loggerFactory,
             ILogger<RequestListenerBase> baseLogger
             )
-            :base(contextProvider, actionHandlerProvider, baseLogger)
+            :base(
+                 contextProvider,
+                 actionHandlerProvider,
+                 (loggerFactory ?? throw new ArgumentNullException(nameof(loggerFactory))).CreateLogger<RequestListenerBase>()
+            )
         {
-            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            _loggerFactory = loggerFactory;
+            _logger = loggerFactory.CreateLogger<TcpRequestListener>();
             
             //TODO: Remove ConfigurationManager from .NET Framework style
             var tcpPort = ConfigurationManager.AppSettings["tcp:port"];
@@ -36,7 +42,7 @@ namespace VendingMachine.Server.Request
             _tcpPort = Int32.TryParse(tcpPort, out int port)
                 ? port
                 : 4444;
-
+            
             _IPAddress = IPAddress.TryParse(ipAddr, out IPAddress addr)
                 ? addr
                 : IPAddress.Any;
@@ -55,7 +61,7 @@ namespace VendingMachine.Server.Request
         protected override async Task<IRequestHandler> GetRequestHandler()
         {
             var clientSocket = await _serverSocket.AcceptTcpClientAsync();            
-            return new TcpRequestHandler(clientSocket);
+            return new TcpRequestHandler(clientSocket, _loggerFactory.CreateLogger<TcpRequestHandler>());
         }
 
         public override void Dispose()
