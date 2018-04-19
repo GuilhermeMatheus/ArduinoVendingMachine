@@ -34,7 +34,7 @@ namespace VendingMachine.Core.Services
             var decimalPrice = new decimal(sale.Price);
             var machine = _machineRepository.Get(sale.MachineId);
             var client = _clientCardRepository.Get(sale.ClientCardId);
-            var products = _productRepository.GetMany(sale.ItemsId.Cast<int>()).ToList();
+            var products = _productRepository.GetMany(sale.ItemsId.Select(_ => (int)_)).ToList();
 
             var errors = new List<OperationError>();
 
