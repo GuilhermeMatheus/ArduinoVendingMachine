@@ -3,6 +3,8 @@
 #include <Arduino.h>
 #include "globals.h"
 
+#define DEBUG
+
 namespace {
 
   static int8_t getProductCode_Impl() {
@@ -109,18 +111,18 @@ void StateChoosingProducts::begin() {
   */
 }
 
-void StateChoosingProducts::enter() {  
-  delay(100);
-
+void StateChoosingProducts::enter() {
   gGlobals.gLcd.clear();
 
   int16_t prodId = askProductId(gGlobals.gCurProd);
   
+#ifdef DEBUG
   gGlobals.gLcd.clear();
   gGlobals.gLcd.print(prodId, DEC);
   gGlobals.gLcd.setCursor(0, 1);
   gGlobals.gLcd.write(gGlobals.gCurProd.name, sizeof(gGlobals.gCurProd.name));
   delay(1000);
+#endif
 
   if(prodId >= 0) {
     updateGlobalStateToNext();
