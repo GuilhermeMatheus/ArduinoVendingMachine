@@ -5,7 +5,8 @@ class ServerBridge {
 public:
   ServerBridge();
   void begin();
-  void identifyClient();
+  void sale();
+  void verifyProductsUpdate();
 };
 
 #endif /* SERVER_BRIDGE_H */

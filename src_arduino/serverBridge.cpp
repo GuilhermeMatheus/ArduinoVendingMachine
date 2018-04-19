@@ -32,7 +32,6 @@ namespace {
     return response;
   }
 
-  // TODO: Do we rly rly want string type dependency???
   static String sendData(const __FlashStringHelper *ifsh, const int timeout) {
     esp8266.print(ifsh);
     esp8266.print(F("\r\n"));
@@ -40,7 +39,9 @@ namespace {
   }
 
   static String sendData(const char *data, uint8_t len, const int timeout) {
-    esp8266.print(data);
+    for(uint8_t i = 0; i < len; i++)
+      esp8266.print(data[i]);
+
     esp8266.print(F("\r\n"));
     return waitResponse(timeout);
   }
@@ -48,20 +49,57 @@ namespace {
   static void connectWifi() {
     sendData(F("AT+RST"), 2000);
     sendData(F("AT+CWMODE=1"), 2000);
-    sendData(F("AT+CWJAP=\"Kibe\",\"86827012\""), 9000);
+    sendData(F("AT+CWJAP=\"Kibe\",\"86827012\""), 3000);
+  }
+
+  static void sendMessageToServer(const char *data, uint8_t len) {
+    sendData(F("AT+CIPMUX=0"), 3000);
+    sendData(F("AT+CIPSTART=\"TCP\",\"ESFIHA\",4444"), 2000);
+    esp8266.print(F("AT+CIPSEND="));
+    esp8266.print(len, DEC);
+    esp8266.print(F("\r\n"));
+    waitResponse(2000);
+    sendData(data, len, 2000);
   }
 
   static void sendMachineStartup() {
-    char data[2] = {
+    char hiId = gGlobals.gMachineId >> 8;
+    char loId = gGlobals.gMachineId & 0xFF;
+    char data[3] = {
       0x03, // Intention
-      0x12, // Machine ID
+      hiId,
+      loId
     };
+    sendMessageToServer(data, sizeof(data));
+  }
 
-    sendData(F("AT+CIPMUX=0"), 9000);
-    sendData(F("AT+CIPSTART=\"TCP\",\"ESFIHA\",4444"), 2000);
-    sendData(F("AT+CIPSEND=2"), 2000); // sizeof(data)
-	  
-	  sendData(data, sizeof(data), 2000);
+  static void sendSale() {
+    char hiId = gGlobals.gMachineId >> 8;
+    char loId = gGlobals.gMachineId & 0xFF;
+
+    union {
+      float price;
+      char bytes[sizeof(float)];
+    } priceData; 
+
+    priceData.price = gGlobals.gCurProd.price;
+
+    char data[13] = {
+      0x0, // Intention
+      hiId,
+      loId,
+      gGlobals.gWallet.UID[0],
+      gGlobals.gWallet.UID[1],
+      gGlobals.gWallet.UID[2],
+      gGlobals.gWallet.UID[3],
+      1, // itemsCount
+      gGlobals.gCurProd.id,
+      priceData.bytes[0],
+      priceData.bytes[1],
+      priceData.bytes[2],
+      priceData.bytes[3]
+    };
+    sendMessageToServer(data, sizeof(data));
   }
 }
 
@@ -75,4 +113,12 @@ void ServerBridge::begin() {
   connectWifi();
   Helpers::lcdWrite(1, 1, F("sendMachineStartup"));
   sendMachineStartup();
+}
+
+void ServerBridge::sale() {
+  sendSale();
+}
+
+void ServerBridge::verifyProductsUpdate() {
+  
 }
