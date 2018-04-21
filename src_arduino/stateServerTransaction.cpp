@@ -2,6 +2,7 @@
 #include <Arduino.h>
 #include "globals.h"
 #include "hardware/helpers.h"
+#include "entities/saleResponse.h"
 
 namespace {
   //   ____________________
@@ -14,7 +15,13 @@ namespace {
     Helpers::lcdWrite(5, 1, F("Aguardando"));
     Helpers::lcdWrite(6, 2, F("servidor"));
 
-    gGlobals.gServerBridge.sale();
+    SaleResponse response;
+    gGlobals.gServerBridge.sale(response);
+
+    gGlobals.gLcd.setCursor(0, 3);
+    gGlobals.gLcd.print(response.creditAfterTransaction);
+
+    delay(2000);
   }
 }
 
