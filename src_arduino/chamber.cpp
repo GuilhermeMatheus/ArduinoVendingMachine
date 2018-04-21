@@ -2,7 +2,7 @@
 #include <Wire.h>
 #include <Arduino.h>
 
-#define DEBUG
+// #define DEBUG
 
 namespace {
   const uint8_t addrSec1 = 0x3F;

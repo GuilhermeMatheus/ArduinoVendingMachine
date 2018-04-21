@@ -3,7 +3,7 @@
 #include <Arduino.h>
 #include "globals.h"
 
-#define DEBUG
+// #define DEBUG
 
 namespace {
 
