@@ -1,6 +1,8 @@
 #ifndef PRODUCT_H
 #define PRODUCT_H
 
+#include <stdint.h>
+
 class Product
 {
 public:
