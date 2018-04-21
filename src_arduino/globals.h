@@ -1,6 +1,9 @@
 #ifndef GLOBALS_H
 #define GLOBALS_H
 
+#define DEBUG
+#undef DEBUG
+
 #include <LiquidCrystal.h>
 #include "hardware/keypad.h"
 #include "hardware/chamber.h"

@@ -2,8 +2,6 @@
 #include <Wire.h>
 #include <Arduino.h>
 
-// #define DEBUG
-
 namespace {
   const uint8_t addrSec1 = 0x3F;
   const uint8_t addrSec2 = 0x38;

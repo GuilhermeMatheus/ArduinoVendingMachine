@@ -4,8 +4,6 @@
 #include "globals.h"
 #include "hardware/helpers.h"
 
-#define DEBUG
-
 #define CON_WIFI_SSID "Kibe"
 #define CON_WIFI_PSWD "86827012"
 
@@ -113,7 +111,7 @@ namespace {
   static void connectWifi() {
     sendData(F("AT+RST"), 2000);
     sendData(F("AT+CWMODE=1"), 2000);
-    sendData(F("AT+CWJAP=\"Kibe\",\"86827012\""), 3000);
+    sendData(F("AT+CWJAP=\"" CON_WIFI_SSID "\",\"" CON_WIFI_PSWD "\""), 3000);
     sendData(F("AT+CIPMUX=0"), 3000);
   }
 

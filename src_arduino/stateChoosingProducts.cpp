@@ -3,8 +3,6 @@
 #include <Arduino.h>
 #include "globals.h"
 
-// #define DEBUG
-
 namespace {
 
   static int8_t getProductCode_Impl() {
@@ -17,6 +15,9 @@ namespace {
       return firstDigit;
     } else {
       gGlobals.gLcd.print(firstDigit);
+
+      Helpers::lcdWriteBottomMenu();
+
       gGlobals.gLcd.setCursor(2, 1);
       
       gGlobals.gKeyPad.waitInput();
@@ -74,9 +75,11 @@ namespace {
 
   static int16_t askProductId(Product &prod) {
     int8_t prodHelix = -1;
-    do {
-      prodHelix = askProductHelix();
-    } while(prodHelix < 0);
+    
+    prodHelix = askProductHelix();
+    
+    if (prodHelix < 0)
+        return -1;
 
     prod = gGlobals.gProductRepository.getByHelix(prodHelix);
     confirmProduct(prod);

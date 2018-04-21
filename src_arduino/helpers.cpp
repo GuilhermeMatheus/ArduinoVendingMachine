@@ -1,8 +1,6 @@
 #include "hardware/helpers.h"
 #include "globals.h"
 
-// #define DEBUG
-
 void Helpers::lcdWriteBottomMenu(uint8_t opt) {  
   Helpers::lcdWrite(0, 2, F("--------------------"));
   
