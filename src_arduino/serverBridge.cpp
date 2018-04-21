@@ -50,8 +50,6 @@ namespace {
 #ifdef DEBUG
     if(serverMessageStarted) Serial.print(F("\r\n"));
 #endif
-
-    return response;
   }
 
   static void sendData(const __FlashStringHelper *ifsh, const int timeout) {
@@ -100,7 +98,7 @@ namespace {
       (char)(gGlobals.gWallet.UID[2]),
       (char)(gGlobals.gWallet.UID[3]),
       1, // itemsCount
-      gGlobals.gCurProd.id,
+      (char)gGlobals.gCurProd.id,
       (char)(priceData.bytes[0]),
       (char)(priceData.bytes[1]),
       (char)(priceData.bytes[2]),
