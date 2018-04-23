@@ -65,8 +65,8 @@ namespace VendingMachine.Core.Services
         {
             var transaction = new Transaction { Card = clientCard, Machine = machine };
 
-            foreach (var item in products)
-                transaction.Products.Add(item);
+            //foreach (var item in products)
+            //    transaction.Products.Add(item);
 
             clientCard.Credit -= value;
 

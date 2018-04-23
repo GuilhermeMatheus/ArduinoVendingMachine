@@ -27,6 +27,9 @@ namespace VendingMachine.EF.Repository
         public TEntity Get(TKey key) =>
             GetSet().Find(key);
 
+        public Task<TEntity> GetAsync(TKey key) =>
+            GetSet().FindAsync(key);
+
         public IEnumerable<TEntity> GetMany(IEnumerable<TKey> keys)
         {
             var predicate = LinqExpressions.BuildContainsExpression(_keySelector, keys);
@@ -39,11 +42,20 @@ namespace VendingMachine.EF.Repository
         public void Delete(TEntity entity) =>
             GetSet().Remove(entity);
 
+        public void Update(TEntity entity) =>
+            GetSet().Update(entity);
+
         public List<TEntity> FetchAll() =>
             GetSet().ToList();
 
+        public Task<List<TEntity>> FetchAllAsync() =>
+            GetSet().ToListAsync();
+
         public int Save() =>
             _dbContext.SaveChanges();
+
+        public Task<int> SaveAsync() =>
+            _dbContext.SaveChangesAsync();
 
         private DbSet<TEntity> GetSet() => 
             _dbContext.Set<TEntity>();

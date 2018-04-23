@@ -10,5 +10,6 @@ namespace VendingMachine.Core.Services
     public interface IVendingMachineControlService
     {
         OperationResult UpdateMachineIp(Machine machine, IPEndPoint machineIpEndPoint);
+        OperationResult CreateUpdateMachinePriceTableJob(Machine machine);
     }
 }

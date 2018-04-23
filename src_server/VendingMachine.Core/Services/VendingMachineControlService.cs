@@ -11,10 +11,30 @@ namespace VendingMachine.Core.Services
     public class VendingMachineControlService : IVendingMachineControlService
     {
         private readonly IMachineRepository _machineRepository;
+        private readonly IJobRepository _jobRepository;
 
-        public VendingMachineControlService(IMachineRepository machineRepository)
+        public VendingMachineControlService(IMachineRepository machineRepository, IJobRepository jobRepository)
         {
             _machineRepository = machineRepository ?? throw new ArgumentNullException(nameof(machineRepository));
+            _jobRepository = jobRepository ?? throw new ArgumentNullException(nameof(jobRepository));
+        }
+
+        public OperationResult CreateUpdateMachinePriceTableJob(Machine machine)
+        {
+            if (machine == null)
+                throw new ArgumentNullException(nameof(machine));
+
+            var job = new Job
+            {
+                JobType = JobType.UpdateMachineProductTable,
+                ExecutionDateTime = DateTime.MinValue,
+                Data = machine.Id.ToString()
+            };
+
+            _jobRepository.Add(job);
+            _jobRepository.Save();
+
+            return OperationResult.Success;
         }
 
         public OperationResult UpdateMachineIp(Machine machine, IPEndPoint machineIpEndPoint)

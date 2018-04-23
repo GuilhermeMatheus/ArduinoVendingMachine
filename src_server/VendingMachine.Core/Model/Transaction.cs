@@ -12,11 +12,5 @@ namespace VendingMachine.Core.Model
 
         public virtual ClientCard Card { get; set; }
         public virtual Machine Machine { get; set; }
-        public virtual IList<Product> Products { get; set; }
-
-        public Transaction()
-        {
-            Products = new List<Product>();
-        }
     }
 }
