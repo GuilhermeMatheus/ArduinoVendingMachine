@@ -34,7 +34,6 @@ void setup() {
 }
 
 void loop() {
-
   if(gStateCurr == NULL) {
     gStateCurr = &stateIdle;
   }
