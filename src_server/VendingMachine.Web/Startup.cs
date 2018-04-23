@@ -2,10 +2,17 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Autofac;
+using Autofac.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using VendingMachine.Core.Services;
+using VendingMachine.EF;
+using VendingMachine.EF.Repository;
 
 namespace VendingMachine.Web
 {
@@ -18,15 +25,53 @@ namespace VendingMachine.Web
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
+        public IServiceProvider ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc();
+            services
+                .AddMvc()
+                .AddControllersAsServices();
+
+            services
+                .AddSingleton(
+                    new LoggerFactory()
+                    .AddConsole(LogLevel.Trace)
+                    .AddDebug()
+                )
+                .AddLogging();
+
+            var builder = new ContainerBuilder();
+
+            builder.Register(
+                c =>
+                {
+                    var optionsBuilder = new DbContextOptionsBuilder<VendingMachineDbContext>();
+                    optionsBuilder.UseSqlServer("Data Source=(localdb)\\MSSQLLocalDB;Database=VendingMachine;trusted_connection=true;Integrated Security=True");
+                    var dbContext = new VendingMachineDbContext(optionsBuilder.Options);
+                    dbContext.Database.EnsureCreated();
+                    return dbContext;
+                })
+                .As<VendingMachineDbContext>()
+                .As<DbContext>()
+                .InstancePerLifetimeScope();
+
+            builder.RegisterAssemblyTypes(typeof(ClientCardRepository).Assembly)
+                   .Where(t => t.Name.EndsWith("Repository"))
+                   .AsImplementedInterfaces();
+
+            builder.RegisterAssemblyTypes(typeof(SaleService).Assembly)
+                   .Where(t => t.Name.EndsWith("Service"))
+                   .AsImplementedInterfaces();
+
+            builder.Populate(services);
+            
+            return new AutofacServiceProvider(builder.Build());
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
+            var seeder = new SampleDataSeeder();
+            seeder.Initialize(app.ApplicationServices).Wait();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();

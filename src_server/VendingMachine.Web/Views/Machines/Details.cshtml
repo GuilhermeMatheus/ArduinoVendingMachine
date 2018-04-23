@@ -1,0 +1,48 @@
+﻿@model VendingMachine.Core.Model.Machine
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Machine</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Alias)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Alias)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.IsActivated)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.IsActivated)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.Address)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.Address)
+        </dd>
+        <dt>
+            @Html.DisplayNameFor(model => model.IPEndPoint)
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.IPEndPoint)
+        </dd>
+    </dl>
+</div>
+
+<form asp-action="UpdatePriceTable" id="form_UpdatePriceTable">
+    @Html.HiddenFor(model => model.Id)
+</form>
+
+<div>
+    <a href="javascript:document.getElementById('form_UpdatePriceTable').submit()">Atualizar tabela de preços</a> |
+    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
+    <a asp-action="Index">Back to List</a>
+</div>
