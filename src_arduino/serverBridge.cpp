@@ -12,9 +12,34 @@
 
 #define IDX_IPD_BEGIN 4
 
+// #define DEBUG
+
 namespace {
   static SoftwareSerial esp8266(SOFTWARE_SERIAL_RX, SOFTWARE_SERIAL_TX);
   static const char *IPD = "+IPD,";
+
+  static void waitAndIgnoreResponse(const int timeout) {
+    long int time = millis();
+
+#ifdef DEBUG
+    String debugResponse = "";
+#endif
+
+
+    while ((time + timeout) > millis())
+    while (esp8266.available()) {
+      uint8_t curByte = esp8266.read();
+
+#ifdef DEBUG
+      debugResponse += (char)curByte;
+#endif
+    }
+
+#ifdef DEBUG
+    Serial.print(debugResponse);
+    Serial.print(F("\r\n"));
+#endif
+  }
 
   static void waitResponse(const int timeout, char *response, uint8_t lenResponse) {
     long int time = millis();
@@ -23,9 +48,18 @@ namespace {
     uint8_t idx_response = 0;
     bool serverMessageStarted = false;
 
+#ifdef DEBUG
+    String debugResponse = "";
+#endif
+
+
     while ((time + timeout) > millis())
     while (esp8266.available()) {
       uint8_t curByte = esp8266.read();
+
+#ifdef DEBUG
+      debugResponse += (char)curByte;
+#endif
 
       // Waiting for "+IDP,"
       if(curByte == IPD[idx_ipd] && idx_ipd != IDX_IPD_BEGIN) {
@@ -46,34 +80,57 @@ namespace {
     }
     
 #ifdef DEBUG
-    if(serverMessageStarted) Serial.print(F("\r\n"));
+    Serial.print(debugResponse);
+    if(serverMessageStarted)
+      Serial.print(F("\r\n"));
+#endif
+  }
+
+  static void sendData_impl(const __FlashStringHelper *ifsh) {
+    esp8266.print(ifsh);
+#ifdef DEBUG
+    Serial.print(F("\r\nSending:\r\n    "));
+    Serial.print(ifsh);
+#endif
+  }
+
+  static void sendData_impl(unsigned long n, int base) {
+    esp8266.print(n, base);
+#ifdef DEBUG
+    Serial.print(F("\r\nSending:\r\n    "));
+    Serial.print(n, base);
+#endif
+  }
+  static void sendData_impl(char c) {
+    esp8266.print(c);
+#ifdef DEBUG
+    Serial.print(F("\r\nSending:\r\n    "));
+    Serial.print(c);
 #endif
   }
 
   static void sendData(const __FlashStringHelper *ifsh, const int timeout) {
-    esp8266.print(ifsh);
-    esp8266.print(F("\r\n"));
-    delay(timeout);
+    sendData_impl(ifsh);
+    sendData_impl(F("\r\n"));
+    waitAndIgnoreResponse(timeout);
   }
 
   static void sendData(const char *data, uint8_t len, const int timeout) {
     for(uint8_t i = 0; i < len; i++)
-      esp8266.print(data[i]);
+      sendData_impl(data[i]);
 
-    esp8266.print(F("\r\n"));
-    delay(timeout);
+    sendData_impl(F("\r\n"));
+    waitAndIgnoreResponse(timeout);
   }
 
   static void sendMessageToServer(const char *data, uint8_t len, char *response, uint8_t lenResponse) {
     sendData(F("AT+CIPSTART=\"TCP\",\"ESFIHA\",4444"), 2000);
-    esp8266.print(F("AT+CIPSEND="));
-    esp8266.print(len, DEC);
-    esp8266.print(F("\r\n"));
-    delay(2000);
+    sendData_impl(F("AT+CIPSEND="));
+    sendData_impl(len, DEC);
+    sendData_impl(F("\r\n"));
+    waitAndIgnoreResponse(2000);
     sendData(data, len, 0);
     waitResponse(4000, response, lenResponse);
-    //sendData(F("+IPD"), 2000);
-    //sendData(F("AT+CIPCLOSE"), 2000);
   }
   
   static void sendSale(void *responseDest) {
