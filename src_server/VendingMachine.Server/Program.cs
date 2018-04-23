@@ -58,13 +58,13 @@ namespace VendingMachine.Server
 
         private static IContainer GetContainer()
         {
-            var serviceCollection = new ServiceCollection();
+            var services = new ServiceCollection();
 
-            serviceCollection.AddSingleton(new LoggerFactory()
+            services.AddSingleton(new LoggerFactory()
                 .AddConsole(LogLevel.Trace)
                 .AddDebug());
 
-            serviceCollection.AddLogging();
+            services.AddLogging();
 
             var builder = new ContainerBuilder();
 
@@ -98,7 +98,7 @@ namespace VendingMachine.Server
 
             builder.RegisterType<TcpRequestListener>();
 
-            builder.Populate(serviceCollection);
+            builder.Populate(services);
 
             return builder.Build();
         }
