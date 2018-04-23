@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace VendingMachine.Server.Request
+namespace VendingMachine.Infrastructure.Request
 {
     public interface IRequestListener
     {

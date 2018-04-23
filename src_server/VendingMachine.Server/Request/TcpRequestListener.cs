@@ -7,9 +7,9 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
-using VendingMachine.Server.Actions;
+using VendingMachine.Infrastructure.Actions;
 
-namespace VendingMachine.Server.Request
+namespace VendingMachine.Infrastructure.Request
 {
     public sealed class TcpRequestListener : RequestListenerBase
     {

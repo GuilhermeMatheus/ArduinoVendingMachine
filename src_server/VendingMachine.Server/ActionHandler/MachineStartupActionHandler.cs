@@ -1,14 +1,15 @@
 ﻿using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Text;
 using VendingMachine.Core.Repository;
 using VendingMachine.Core.Services;
-using VendingMachine.Server.Actions;
-using VendingMachine.Server.Helpers;
+using VendingMachine.Infrastructure.Actions;
+using VendingMachine.Infrastructure.Helpers;
 
-namespace VendingMachine.Server.ActionHandler
+namespace VendingMachine.Infrastructure.ActionHandler
 {
     public enum StartEventResult
     {

@@ -5,7 +5,7 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace VendingMachine.Server.Exceptions
+namespace VendingMachine.Infrastructure.Exceptions
 {
     public class ActionNotSupportedException : Exception
     {

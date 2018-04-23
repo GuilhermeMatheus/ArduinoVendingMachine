@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace VendingMachine.Server.Actions
+namespace VendingMachine.Infrastructure.Actions
 {
     public enum ActionType : byte
     {

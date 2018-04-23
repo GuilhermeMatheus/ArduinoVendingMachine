@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace VendingMachine.Server.Helpers
+namespace VendingMachine.Infrastructure.Helpers
 {
     internal static class ByteHelper
     {

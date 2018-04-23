@@ -1,8 +1,8 @@
 using System;
 using Xunit;
-using VendingMachine.Server.Sale;
+using VendingMachine.Infrastructure.Sale;
 
-namespace VendingMachine.Server.Tests
+namespace VendingMachine.Infrastructure.Tests
 {
     public class SaleRequestInfoParserTests
     {

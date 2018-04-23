@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VendingMachine.Core.Services;
-using VendingMachine.Server.ActionHandler;
-using VendingMachine.Server.Exceptions;
+using VendingMachine.Infrastructure.ActionHandler;
+using VendingMachine.Infrastructure.Exceptions;
 
-namespace VendingMachine.Server.Actions
+namespace VendingMachine.Infrastructure.Actions
 {
     public class ActionHandlerProvider : IActionHandlerProvider
     {

@@ -9,9 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VendingMachine.Core", "Vend
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VendingMachine.EF", "VendingMachine.EF\VendingMachine.EF.csproj", "{996AB765-D222-4343-9F25-F76A6259301E}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VendingMachine.Server", "VendingMachine.Server\VendingMachine.Server.csproj", "{18100506-DF9B-438B-A75B-E656BD25FD3E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VendingMachine.Infrastructure", "VendingMachine.Server\VendingMachine.Infrastructure.csproj", "{18100506-DF9B-438B-A75B-E656BD25FD3E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VendingMachine.Server.Tests", "VendingMachine.Server.Tests\VendingMachine.Server.Tests.csproj", "{F75BE33A-3103-437B-BBDC-00CE5DD0FD59}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VendingMachine.Infrastructure.Tests", "VendingMachine.Server.Tests\VendingMachine.Infrastructure.Tests.csproj", "{F75BE33A-3103-437B-BBDC-00CE5DD0FD59}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

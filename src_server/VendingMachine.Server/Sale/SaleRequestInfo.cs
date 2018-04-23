@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace VendingMachine.Server.Sale
+namespace VendingMachine.Infrastructure.Sale
 {
     internal struct SaleRequestInfo
     {

@@ -16,12 +16,12 @@ using VendingMachine.Core.Repository;
 using VendingMachine.Core.Services;
 using VendingMachine.EF;
 using VendingMachine.EF.Repository;
-using VendingMachine.Server.Actions;
-using VendingMachine.Server.Exceptions;
-using VendingMachine.Server.Request;
+using VendingMachine.Infrastructure.Actions;
+using VendingMachine.Infrastructure.Exceptions;
+using VendingMachine.Infrastructure.Request;
 
-[assembly: InternalsVisibleTo("VendingMachine.Server.Tests")]
-namespace VendingMachine.Server
+[assembly: InternalsVisibleTo("VendingMachine.Infrastructure.Tests")]
+namespace VendingMachine.Infrastructure
 {
     class Program
     {

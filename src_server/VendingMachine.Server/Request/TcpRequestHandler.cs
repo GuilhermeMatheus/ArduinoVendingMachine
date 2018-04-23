@@ -5,9 +5,9 @@ using System.Linq;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
-using VendingMachine.Server.Helpers;
+using VendingMachine.Infrastructure.Helpers;
 
-namespace VendingMachine.Server.Request
+namespace VendingMachine.Infrastructure.Request
 {
     public class TcpRequestHandler : IRequestHandler
     {

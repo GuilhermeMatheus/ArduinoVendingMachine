@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using VendingMachine.Core.Operations;
-using static VendingMachine.Server.Helpers.ByteHelper;
+using static VendingMachine.Infrastructure.Helpers.ByteHelper;
 
-namespace VendingMachine.Server.Sale
+namespace VendingMachine.Infrastructure.Sale
 {
     /*
      * Toda implementação desta classe segue a especificação em
