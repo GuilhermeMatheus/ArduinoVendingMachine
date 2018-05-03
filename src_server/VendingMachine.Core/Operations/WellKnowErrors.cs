@@ -9,6 +9,7 @@ namespace VendingMachine.Core.Operations
         ClientNotFound = 1,
         ClientWithNoEnoughCredit = 2,
         InvalidProduct = 3,
-        InvalidPrice = 4
+        InvalidPrice = 4,
+        InvalidMachineIPEndPoint = 5
     }
 }

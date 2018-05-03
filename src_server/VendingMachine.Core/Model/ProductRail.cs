@@ -16,5 +16,6 @@ namespace VendingMachine.Core.Model
         public virtual int MachineId { get; set; }
         
         public virtual int Helix { get; set; }
+        public virtual int Count { get; set; }
     }
 }

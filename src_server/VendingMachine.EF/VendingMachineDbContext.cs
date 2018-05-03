@@ -20,6 +20,16 @@ namespace VendingMachine.EF
             base.OnModelCreating(modelBuilder);
 
             modelBuilder
+                .Entity<ClientCard>()
+                .Property(i => i.Rfid)
+                .ValueGeneratedNever();
+
+            modelBuilder
+                .Entity<Product>()
+                .Property(i => i.Id)
+                .ValueGeneratedNever();
+
+            modelBuilder
                 .Entity<ProductRail>()
                 .HasKey(t => new { t.MachineId, t.ProductId });
         }

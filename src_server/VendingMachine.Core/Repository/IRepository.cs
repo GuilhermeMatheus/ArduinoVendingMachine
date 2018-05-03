@@ -9,9 +9,12 @@ namespace VendingMachine.Core.Repository
 {
     public interface IClientCardRepository : IRepository<ClientCard, long> { }
     public interface IMachineRepository : IRepository<Machine, int> { }
-    public interface IProductRepository : IRepository<Product, int> { }
     public interface ITransactionRepository : IRepository<Transaction, int> { }
     public interface IJobRepository : IRepository<Job, int> { }
+    public interface IProductRepository : IRepository<Product, int>
+    {
+        IEnumerable<ProductRail> GetProductsInMachine(Machine machine);
+    }
 
     public interface IRepository<TEntity, TKey>
         where TEntity : class

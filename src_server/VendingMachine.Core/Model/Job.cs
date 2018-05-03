@@ -21,6 +21,8 @@ namespace VendingMachine.Core.Model
 
         public JobType JobType { get; set; }
 
-        public DateTime ExecutionDateTime { get; set; }
+        public DateTime ScheduledDateTime { get; set; }
+
+        public DateTime? ExecutionDateTime { get; set; }
     }
 }

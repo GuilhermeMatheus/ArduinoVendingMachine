@@ -12,6 +12,12 @@ namespace VendingMachine.EF
         public async Task Initialize(IServiceProvider serviceProvider)
         {
             var context = (VendingMachineDbContext)serviceProvider.GetService(typeof(VendingMachineDbContext));
+            await Initialize(context);
+        }
+
+        public async Task Initialize(VendingMachineDbContext context)
+        {
+            await PopulateClientCardsAsync(context);
 
             await PopulateProductsAsync(context);
             await context.SaveChangesAsync();
@@ -23,33 +29,39 @@ namespace VendingMachine.EF
             await context.SaveChangesAsync();
         }
 
+        private static async Task PopulateClientCardsAsync(VendingMachineDbContext context)
+        {
+            if (context.ClientCards.Any())
+                return;
+
+            var clientCard = new ClientCard { Rfid = 69801812, Alias = "Guilherme Matheus Costa", Credit = 100 };
+            await context.ClientCards.AddAsync(clientCard);
+        }
+
         private static async Task PopulateProductsAsync(VendingMachineDbContext context)
         {
             if (context.Products.Any())
                 return;
 
-            var products = new List<Product>
-            {
-                new Product { DisplayName = "Bolacha Passa-tempo", Price = 4.55m },
-                new Product { DisplayName = "Bolacha Negresco", Price = 4.50m },
-                new Product { DisplayName = "Doritos Frito/Assado", Price = 6m },
-                new Product { DisplayName = "Twix cobertura dupla", Price = 3.50m },
-                new Product { DisplayName = "Barra de cereal diet", Price = 1.50m },
-                new Product { DisplayName = "Snicker", Price = 2.50m },
-                new Product { DisplayName = "Bolo floresta negra", Price = 7m },
-                new Product { DisplayName = "M&Ms", Price = 3m },
-                new Product { DisplayName = "Refrigerante Pepsi", Price = 5m },
-                new Product { DisplayName = "Coca-cola zero", Price = 5m },
-                new Product { DisplayName = "Suco de uva DelValle", Price = 4.50m },
-                new Product { DisplayName = "Suco de laranja Ades", Price = 4.50m },
-                new Product { DisplayName = "Lanche natural vegan", Price = 6.50m },
-                new Product { DisplayName = "Lanche peito de peru", Price = 6.50m },
-                new Product { DisplayName = "Hamburguer X-Tudo", Price = 6.50m },
-                new Product { DisplayName = "Bolacha Negresco", Price = 4.50m }
-            };
-
-            foreach (var item in products)
-                await context.Products.AddAsync(item);
+            var id = 0;
+            await context.Products.AddRangeAsync(
+                new Product {Id = id++, DisplayName = "Bolacha Passa-tempo", Price = 4.55m },
+                new Product {Id = id++, DisplayName = "Bolacha Negresco", Price = 4.50m },
+                new Product {Id = id++, DisplayName = "Doritos Frito/Assado", Price = 6m },
+                new Product {Id = id++, DisplayName = "Twix cobertura dupla", Price = 3.50m },
+                new Product {Id = id++, DisplayName = "Barra de cereal diet", Price = 1.50m },
+                new Product {Id = id++, DisplayName = "Snicker", Price = 2.50m },
+                new Product {Id = id++, DisplayName = "Bolo floresta negra", Price = 7m },
+                new Product {Id = id++, DisplayName = "M&Ms", Price = 3m },
+                new Product {Id = id++, DisplayName = "Refrigerante Pepsi", Price = 5m },
+                new Product {Id = id++, DisplayName = "Coca-cola zero", Price = 5m },
+                new Product {Id = id++, DisplayName = "Suco de uva DelValle", Price = 4.50m },
+                new Product {Id = id++, DisplayName = "Suco de laranja Ades", Price = 4.50m },
+                new Product {Id = id++, DisplayName = "Lanche natural vegan", Price = 6.50m },
+                new Product {Id = id++, DisplayName = "Lanche peito de peru", Price = 6.50m },
+                new Product {Id = id++, DisplayName = "Hamburguer X-Tudo", Price = 6.50m },
+                new Product {Id = id++, DisplayName = "Bolacha Negresco", Price = 4.50m }
+            );
         }
 
         private static async Task PopulateMachinesAsync(VendingMachineDbContext context)
@@ -85,6 +97,7 @@ namespace VendingMachine.EF
                 {
                     Machine = machine,
                     Helix = i,
+                    Count = 3,
                     Product = products[i-1]
                 };
 

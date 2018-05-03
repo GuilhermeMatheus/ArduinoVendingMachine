@@ -27,7 +27,7 @@ namespace VendingMachine.Core.Services
             var job = new Job
             {
                 JobType = JobType.UpdateMachineProductTable,
-                ExecutionDateTime = DateTime.MinValue,
+                ScheduledDateTime = DateTime.MinValue,
                 Data = machine.Id.ToString()
             };
 
@@ -37,7 +37,15 @@ namespace VendingMachine.Core.Services
             return OperationResult.Success;
         }
 
-        public OperationResult UpdateMachineIp(Machine machine, IPEndPoint machineIpEndPoint)
+        public OperationResult UpdateAccessPointIp(Machine machine, IPAddress ip)
+        {
+            machine.AccessPointIp = ip.ToString();
+            _machineRepository.Save();
+
+            return OperationResult.Success;
+        }
+
+        public OperationResult UpdateClientIpEndPoint(Machine machine, IPEndPoint machineIpEndPoint)
         {
             machine.IPEndPoint = machineIpEndPoint.ToString();
             _machineRepository.Save();

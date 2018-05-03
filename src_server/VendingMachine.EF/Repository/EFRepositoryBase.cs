@@ -13,15 +13,15 @@ namespace VendingMachine.EF.Repository
     public abstract class EFRepositoryBase<TEntity, TKey> : IRepository<TEntity, TKey>
          where TEntity : class
     {
-        private readonly DbContext _dbContext;
-        private readonly Expression<Func<TEntity, TKey>> _keySelector;
+        protected readonly DbContext dbContext;
+        protected readonly Expression<Func<TEntity, TKey>> keySelector;
 
         public IQueryable<TEntity> Query => GetSet().AsQueryable();
 
         public EFRepositoryBase(DbContext dbContext, Expression<Func<TEntity, TKey>> keySelector)
         {
-            _dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
-            _keySelector = keySelector ?? throw new ArgumentNullException(nameof(keySelector));
+            this.dbContext = dbContext ?? throw new ArgumentNullException(nameof(dbContext));
+            this.keySelector = keySelector ?? throw new ArgumentNullException(nameof(keySelector));
         }
 
         public TEntity Get(TKey key) =>
@@ -32,7 +32,7 @@ namespace VendingMachine.EF.Repository
 
         public IEnumerable<TEntity> GetMany(IEnumerable<TKey> keys)
         {
-            var predicate = LinqExpressions.BuildContainsExpression(_keySelector, keys);
+            var predicate = LinqExpressions.BuildContainsExpression(keySelector, keys);
             return Query.Where(predicate).AsEnumerable();
         }
 
@@ -52,12 +52,12 @@ namespace VendingMachine.EF.Repository
             GetSet().ToListAsync();
 
         public int Save() =>
-            _dbContext.SaveChanges();
+            dbContext.SaveChanges();
 
         public Task<int> SaveAsync() =>
-            _dbContext.SaveChangesAsync();
+            dbContext.SaveChangesAsync();
 
         private DbSet<TEntity> GetSet() => 
-            _dbContext.Set<TEntity>();
+            dbContext.Set<TEntity>();
     }
 }

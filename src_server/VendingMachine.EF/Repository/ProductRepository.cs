@@ -15,5 +15,17 @@ namespace VendingMachine.EF.Repository
             : base(dbContext, _ => _.Id)
         {
         }
+
+        public IEnumerable<ProductRail> GetProductsInMachine(Machine machine)
+        {
+            var machineId = machine.Id;
+            var products = dbContext
+                            .Set<ProductRail>()
+                            .AsQueryable()
+                            .Include(pr => pr.Product)
+                            .Where(_ => _.MachineId == machineId);
+
+            return products;
+        }
     }
 }
