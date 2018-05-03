@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -9,9 +10,21 @@ namespace VendingMachine.Infrastructure.Helpers
     internal static class ByteHelper
     {
         public static short GetMachineId(ReadOnlySpan<byte> bytes, int startByte)
-        { 
+        {
             return (short)
                 ((bytes[startByte] << 8) + (bytes[startByte + 1]));
+        }
+
+        public static IPAddress GetMachineAccessPointIP(ReadOnlySpan<byte> bytes)
+        {
+            var apip = "";
+            foreach (char b in bytes)
+            {
+                if (b == '"') break;
+                apip += b;
+            }
+
+            return IPAddress.Parse(apip);
         }
 
         public static long GetMifareId(ReadOnlySpan<byte> bytes, int startByte)

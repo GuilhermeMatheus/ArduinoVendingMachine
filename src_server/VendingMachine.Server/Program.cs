@@ -12,12 +12,15 @@ using System.Net.Sockets;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using VendingMachine.Core.Helpers;
 using VendingMachine.Core.Repository;
 using VendingMachine.Core.Services;
 using VendingMachine.EF;
 using VendingMachine.EF.Repository;
 using VendingMachine.Infrastructure.Actions;
 using VendingMachine.Infrastructure.Exceptions;
+using VendingMachine.Infrastructure.Jobs;
+using VendingMachine.Infrastructure.Remote;
 using VendingMachine.Infrastructure.Request;
 
 [assembly: InternalsVisibleTo("VendingMachine.Infrastructure.Tests")]
@@ -31,29 +34,62 @@ namespace VendingMachine.Infrastructure
         {
             Console.WriteLine("Initializing server. . .");
             var container = GetContainer();
-            using (var scope = container.BeginLifetimeScope())
-            {
-                var requestListener = scope.Resolve<TcpRequestListener>();
-                _logger = scope.Resolve<ILogger<Program>>();
-                _logger.LogInformation("Starting");
+            var seeded = false;
 
-                StartRequestListener(requestListener);
-            }
+            while(true)
+                using (var scope = container.BeginLifetimeScope())
+                {
+                    _logger = scope.Resolve<ILogger<Program>>();
+
+                    if (!seeded)
+                    {
+                        var seeder = new SampleDataSeeder();
+                        seeder.Initialize(scope.Resolve<VendingMachineDbContext>()).Wait();
+                        seeded = true;
+                    }
+
+                    var requestListener = scope.Resolve<TcpRequestListener>();
+                    StartRequestListener(requestListener);
+                }
         }
 
-        private static void StartRequestListener(IRequestListener requestListener)
+        private static void StartJobRunner(JobRunner jobRunner)
         {
-            requestListener.Start();
+            Task.Factory.StartNew(async () =>
+            {
+                _logger.LogInformation("Starting JobRunner...");
+                while (true)
+                {
+                    await Task.Delay(2000);
+                    try
+                    {
+                        await jobRunner.RunAsync();
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogCritical(ex, "Ops. Something went wrong with JobRunner");
+                        await Task.Delay(60_000);
+                    }
+                }
+            });
+        }
 
-            while (true)
+
+        private static void StartRequestListener(TcpRequestListener requestListener)
+        {
+            _logger.LogInformation("Starting TcpRequestListener...");
+            requestListener.Start();
+            //while (true)
+            {
                 try
                 {
                     requestListener.Listen();
                 }
                 catch (Exception ex)
                 {
-                    _logger.LogCritical(ex, "Ops. Something went wrong.");
+                    _logger.LogCritical(ex, "Ops. Something went wrong with TcpRequestListener.");
                 }
+            }
         }
 
         private static IContainer GetContainer()
@@ -77,6 +113,7 @@ namespace VendingMachine.Infrastructure
                     dbContext.Database.EnsureCreated();
                     return dbContext;
                 })
+                .As<VendingMachineDbContext>()
                 .As<DbContext>()
                 .InstancePerLifetimeScope();
 
@@ -88,6 +125,10 @@ namespace VendingMachine.Infrastructure
                    .Where(t => t.Name.EndsWith("Service"))
                    .AsImplementedInterfaces();
 
+            builder.RegisterAssemblyTypes(typeof(RemoteMachineService).Assembly)
+                   .Where(t => t.Name.EndsWith("Service"))
+                   .AsImplementedInterfaces();
+
             builder.RegisterAssemblyTypes(typeof(ActionHandlerProvider).Assembly)
                    .Where(t => t.Name.EndsWith("Provider"))
                    .AsImplementedInterfaces();
@@ -96,7 +137,12 @@ namespace VendingMachine.Infrastructure
                    .Where(t => t.Name.EndsWith("ActionHandler"))
                    .AsSelf();
 
+            builder.RegisterAssemblyTypes(typeof(ActionHandlerProvider).Assembly)
+                   .Where(t => t.Name.EndsWith("ActionHandler"))
+                   .AsSelf();
+
             builder.RegisterType<TcpRequestListener>();
+            builder.RegisterType<JobRunner>();
 
             builder.Populate(services);
 

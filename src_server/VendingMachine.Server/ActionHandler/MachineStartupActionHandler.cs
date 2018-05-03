@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Text;
+using VendingMachine.Core.Operations;
 using VendingMachine.Core.Repository;
 using VendingMachine.Core.Services;
 using VendingMachine.Infrastructure.Actions;
@@ -36,7 +37,10 @@ namespace VendingMachine.Infrastructure.ActionHandler
         public byte[] Process(ActionContext context)
         {
             var machineIpEndPoint = (IPEndPoint)context.IncomingMessage["machine:IPEndPoint"];
-            var machineId = ByteHelper.GetMachineId(context.IncomingMessage.RawBytes, 1);
+            var rawBytes = context.IncomingMessage.RawBytes.AsSpan();
+
+            // var machineAccessPoint = ByteHelper.GetMachineAccessPointIP(rawBytes.Slice(3));
+            var machineId = ByteHelper.GetMachineId(rawBytes, 1);
 
             _logger.LogTrace($"machine:IPEndPoint is {machineIpEndPoint}");
             _logger.LogTrace($"machineId is {machineId}");
@@ -45,7 +49,10 @@ namespace VendingMachine.Infrastructure.ActionHandler
             if (machine == null)
                 return new byte[] { (byte)StartEventResult.NotFound };
 
-            var operationResult = _machineControlService.UpdateMachineIp(machine, machineIpEndPoint);
+            var operationResult = OperationResult.Success;
+
+            // operationResult += _machineControlService.UpdateAccessPointIp(machine, machineAccessPoint);
+            operationResult += _machineControlService.UpdateClientIpEndPoint(machine, machineIpEndPoint);
 
             if (!operationResult.Succeeded)
             {
