@@ -75,6 +75,19 @@ KeyPad::KeyPad(uint8_t c1, uint8_t c2, uint8_t c3) {
   currentChar = ' ';
 }
 
+bool KeyPad::waitInput(uint16_t timeout){ 
+  long int time = millis();
+  bool hitTimeout = false;
+  currentChar = ' ';
+
+  do {
+    currentChar = getKeyPadState();
+    hitTimeout = millis() >= (time + timeout);
+  } while(currentChar == ' ' && !hitTimeout);
+
+  return !hitTimeout;
+}
+
 void KeyPad::waitInput(){ 
   currentChar = ' ';
 
