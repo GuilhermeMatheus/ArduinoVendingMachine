@@ -99,19 +99,107 @@ StateChoosingProducts::StateChoosingProducts(State *pNextState) : State(pNextSta
 }
 
 void StateChoosingProducts::begin() {
-  /*
-  for(uint8_t i = 1; i <= 16; i+=1) {
-    Product prod;
-    prod.id = i;
-    prod.helix = i;
-    prod.count = 10;
-    prod.price = 12.34 * i;
-    memcpy(prod.name, "AbcdefghifklmnopqrsA", sizeof(prod.name));
-    prod.name[0] = i + '0';
-    prod.name[19] = i + '0';
-    gGlobals.gProductRepository.add(prod);
-  }
-  */
+  uint8_t item_idx = 0;
+  
+  Product prod;
+  prod.count = 10;
+
+  prod.id = item_idx;
+  prod.helix = item_idx++;
+  memcpy(prod.name, "Bolacha Passa-tempo ", sizeof(prod.name));
+  prod.price = 4.55;
+  gGlobals.gProductRepository.add(prod);
+
+  prod.id = item_idx;
+  prod.helix = item_idx++;
+  memcpy(prod.name, "Bolacha Negresco    ", sizeof(prod.name));
+  prod.price = 4.50;
+  gGlobals.gProductRepository.add(prod);
+
+  prod.id = item_idx;
+  prod.helix = item_idx++;
+  memcpy(prod.name, "Doritos Frito/Assado", sizeof(prod.name));
+  prod.price = 6;
+  gGlobals.gProductRepository.add(prod);
+
+  prod.id = item_idx;
+  prod.helix = item_idx++;
+  memcpy(prod.name, "Twix cobertura dupla", sizeof(prod.name));
+  prod.price = 3.50;
+  gGlobals.gProductRepository.add(prod);
+
+  prod.id = item_idx;
+  prod.helix = item_idx++;
+  memcpy(prod.name, "Barra de cereal diet", sizeof(prod.name));
+  prod.price = 1.50;
+  gGlobals.gProductRepository.add(prod);
+
+  prod.id = item_idx;
+  prod.helix = item_idx++;
+  memcpy(prod.name, "Snicker             ", sizeof(prod.name));
+  prod.price = 2.50;
+  gGlobals.gProductRepository.add(prod);
+
+  prod.id = item_idx;
+  prod.helix = item_idx++;
+  memcpy(prod.name, "Bolo floresta negra ", sizeof(prod.name));
+  prod.price = 7;
+  gGlobals.gProductRepository.add(prod);
+
+  prod.id = item_idx;
+  prod.helix = item_idx++;
+  memcpy(prod.name, "M&Ms                ", sizeof(prod.name));
+  prod.price = 3;
+  gGlobals.gProductRepository.add(prod);
+
+  prod.id = item_idx;
+  prod.helix = item_idx++;
+  memcpy(prod.name, "Refrigerante Pepsi  ", sizeof(prod.name));
+  prod.price = 5;
+  gGlobals.gProductRepository.add(prod);
+
+  prod.id = item_idx;
+  prod.helix = item_idx++;
+  memcpy(prod.name, "Coca-cola zero      ", sizeof(prod.name));
+  prod.price = 5;
+  gGlobals.gProductRepository.add(prod);
+
+  prod.id = item_idx;
+  prod.helix = item_idx++;
+  memcpy(prod.name, "Suco de uva DelValle", sizeof(prod.name));
+  prod.price = 4.50;
+  gGlobals.gProductRepository.add(prod);
+
+  prod.id = item_idx;
+  prod.helix = item_idx++;
+  memcpy(prod.name, "Suco de laranja Ades", sizeof(prod.name));
+  prod.price = 4.50;
+  gGlobals.gProductRepository.add(prod);
+
+  prod.id = item_idx;
+  prod.helix = item_idx++;
+  memcpy(prod.name, "Lanche natural vegan", sizeof(prod.name));
+  prod.price = 6.50;
+  gGlobals.gProductRepository.add(prod);
+
+  prod.id = item_idx;
+  prod.helix = item_idx++;
+  memcpy(prod.name, "Lanche peito de peru", sizeof(prod.name));
+  prod.price = 6.50;
+  gGlobals.gProductRepository.add(prod);
+
+  prod.id = item_idx;
+  prod.helix = item_idx++;
+  memcpy(prod.name, "Hamburguer X-Tudo   ", sizeof(prod.name));
+  prod.price = 6.50;
+  gGlobals.gProductRepository.add(prod);
+
+  prod.id = item_idx;
+  prod.helix = item_idx++;
+  memcpy(prod.name, "Bolacha Negresco    ", sizeof(prod.name));
+  prod.price = 4.50;
+  gGlobals.gProductRepository.add(prod);
+
 }
 
 void StateChoosingProducts::enter() {
