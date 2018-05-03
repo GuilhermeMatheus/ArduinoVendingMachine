@@ -19,6 +19,9 @@ void StateActivateChamber::enter() {
   Helpers::lcdWrite(0, 2, F("--------------------"));
   Helpers::lcdWrite(5, 3, F("Sirva-se"));
 
+  // While activating the rotor, we can set esp8622 to server mode
+  // gGlobals.gServerBridge.setServerMode();
+
   gGlobals.gChamber.activateHelix(gGlobals.gCurProd.helix);
 
   goToInitialState();
