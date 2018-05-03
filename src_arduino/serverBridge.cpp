@@ -201,7 +201,3 @@ void ServerBridge::begin() {
 void ServerBridge::sale(SaleResponse &response) {
   sendSale(&response);
 }
-
-void ServerBridge::verifyProductsUpdate() {
-  
-}
